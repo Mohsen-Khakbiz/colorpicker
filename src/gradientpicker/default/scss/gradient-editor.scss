@@ -2,13 +2,23 @@
 
 .gradient-editor {
     position: relative;
+    -webkit-user-select: none;
     user-select: none;
+    cursor: default;
 
     .unit {
-        display: grid;
-        grid-template-columns: 70px 50px 50px;
-        grid-column-gap: 2px;
+        display: flex;
+        gap: 2px;
+        align-items: center;
         font-size: 11px;
+
+        input {
+            display: initial;
+            
+            &[type=checkbox] {
+                appearance: checkbox;
+            }
+        }
     }
 
     [data-editor] {
@@ -22,6 +32,7 @@
     }
 
     &:not([data-selected-editor*='static-gradient']) {
+        
         [data-editor='gradient'],
         [data-editor='tools'] {
             display: grid;
@@ -31,10 +42,9 @@
     &[data-selected-editor='linear-gradient'],
     &[data-selected-editor='repeating-linear-gradient'],
     &[data-selected-editor='conic-gradient'],
-    &[data-selected-editor='repeating-conic-gradient']
-    {
-        [data-editor='angle']
-        {
+    &[data-selected-editor='repeating-conic-gradient'] {
+        
+        [data-editor='angle'] {
             display: grid;
         }
     }
@@ -42,23 +52,19 @@
     &[data-selected-editor='radial-gradient'],
     &[data-selected-editor='repeating-radial-gradient'],
     &[data-selected-editor='conic-gradient'],
-    &[data-selected-editor='repeating-conic-gradient']
-    {
+    &[data-selected-editor='repeating-conic-gradient'] {
+        
         [data-editor='centerX'],
-        [data-editor='centerY']
-        {
+        [data-editor='centerY'] {
             display: grid;
         }
     }
 
 
     &[data-selected-editor='radial-gradient'],
-    &[data-selected-editor='repeating-radial-gradient'],
-    &[data-selected-editor='conic-gradient'],
-    &[data-selected-editor='repeating-conic-gradient']
-    {
-        [data-editor='radialType']
-        {
+    &[data-selected-editor='repeating-radial-gradient']{
+
+        [data-editor='radialType'] {
             margin-top: 5px;
             display: grid;
             grid-template-columns: 50px 80px;
@@ -76,8 +82,7 @@
         padding-bottom: 10px;
 
         > div {
-            // display: grid;
-            grid-template-columns: 50px 1fr;
+            grid-template-columns: 1fr 1fr;
         }
 
     }
@@ -93,8 +98,8 @@
         left: 10px;
         right: 10px;
         top: 4px;
-        height: 14px;
-        border-radius: 10px;
+        height: 20px;
+        border-radius: 15px;
         border:1px solid var(--gradientpicker-border-color);
         box-sizing: border-box;
         @include mixins.transparent-background();
@@ -112,31 +117,20 @@
             border-radius: 10px;
             pointer-events: none;
 
-            @for $selectValue from 0 to 20 {
-                &[data-selected-index="#{$selectValue}"] {
-                    [data-index="#{$selectValue}"] {
-                        border:0px;
-                        transform: translateX(-50%) translateY(calc(100%));
-
-                        .arrow {
-                            display: block;
-                        }
-                    }
-                }
-            }
-
-
             .step {
                 pointer-events: all;
-                width: 10px;
-                height: 10px;
-                border: 1px solid white;
+                width: 15px;
+                height: 15px;
+                border: 2px solid white;
                 box-sizing: border-box;
                 display: inline-block;
                 position: absolute;
                 top: 50%;
+                z-index: 10;
                 border-radius: 100%;
+                cursor: ew-resize;
                 box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.5);
+                transition: transform 0.1s ease-out;
 
                 &[data-cut='true'] {
                     border-radius: 0%;
@@ -157,21 +151,57 @@
                     right:0px;
                     border-radius: 100%;
                     pointer-events: none;
+
+                    &:before {
+                        content: '';
+                        display: inline-block;
+                        width: 2px;
+                        height: 6px;
+                        background: inherit;
+                        position: absolute;
+                        bottom: 100%;
+                        left: calc(50% - 1px);
+                        opacity: 0;
+                    }
                 }
 
-                .arrow {
-                    position: absolute;
-                    left: 50%;
-                    display: none;
-                    top:0%;
-                    width:5px;
-                    height:5px;
-                    transform: translateX(-50%) translateY(-120%);
-                    pointer-events: none;
-                    clip-path: polygon(40% 0%, 60% 0%, 60% 100%, 40% 100%);
+                &[data-is-active=true] {
+                    // border:0px;
+
+                    .remove-step {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                    .color-view:before {
+                        opacity: 1;
+                    }
                 }
             }
         }
+    }
+
+    .remove-step {
+        display: inline-flex;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        line-height: 1;
+        font-size: 12px;
+        box-shadow: 0 5px 10px -1px rgb(0 0 0 / 60%);
+        background-color: rgb(250 0 0 / 60%);
+        -webkit-backdrop-filter: blur(5px) saturate(120%);
+        backdrop-filter: blur(5px) saturate(120%);
+        color: #fff;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: -5px;
+        z-index: 10;
+        cursor: pointer;
+        transform: scale(0.5);
+        opacity: 0;
+        transition: transform 0.1s ease-out, opacity 0.1s;
     }
 
     input[type=range] {
@@ -179,6 +209,17 @@
         width: 100%;
         margin: 6.2px 0;
         background-color: transparent;
+        position: relative;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 100%;
+            height: 20px;
+            position: absolute;
+            top: -10px;
+            left: 0;
+        }
     }
     input[type=range]:focus {
         outline: none;
@@ -255,7 +296,6 @@
 
     .right-menu {
         display: inline-block;
-        float: right;
 
         button {
             font-size: 11px;

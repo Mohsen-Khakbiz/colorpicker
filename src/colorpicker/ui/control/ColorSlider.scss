@@ -51,6 +51,7 @@
     box-shadow: var(--shadow-pointer);
     box-sizing: border-box;
     transition: box-shadow var(--speed-focus) ease-out;
+    cursor: ew-resize;
   }
   &__brick {
     position: absolute;
@@ -84,6 +85,17 @@
     }
   }
   &--alpha {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+
+    .el-cp-slider__body {
+      flex-grow: 1;
+      margin-inline-end: 10px;
+    }
+    input {
+      width: 40px;
+    }
     .el-cp-slider {
       &__body {
         @include mixins.transparent-background();

@@ -15,6 +15,7 @@ import { ColorStep } from './image-resource/ColorStep';
 
 
 const tabs = [
+  { type: "solid", title: "Solid" },
   { type: "linear-gradient", title: "Linear Gradient" },
   { type: "repeating-linear-gradient", title: "Repeating Linear Gradient" },
   { type: "radial-gradient", title: "Radial Gradient" },
@@ -66,19 +67,19 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
     if (typeof this.colorpickerShowCallback == 'function') {
         this.colorpickerShowCallback(gradientString, this.image);
-    }        
+    }
   }
 
   callbackHideColorValue() {
     var gradientString = this.image.toString();
       if (typeof this.opt.onHide == 'function') {
-          this.opt.onHide.call(this, gradientString, this.image);
+        this.opt.onHide.call(this, gradientString, this.image);
       }
 
       if (typeof this.colorpickerHideCallback == 'function') {
-          this.colorpickerHideCallback(gradientString, this.image);
-      }        
-  }    
+        this.colorpickerHideCallback(gradientString, this.image);
+      }
+  }
 
 
   initialize() {
@@ -89,14 +90,14 @@ export default class DefaultGradientPicker extends BaseColorPicker {
     this.$root.el.classList = "";
     this.$root.el.classList.add('el-gradientpicker');
 
-    this.setGradient(this.opt.gradient || 'linear-gradient(to right, red 0%, yellow 100%)')
+    this.setGradient(this.opt.gradient || 'linear-gradient(0deg, red 0%, yellow 100%)')
 
   }
 
   setGradient (gradientString) {
     this.gradient = gradientString
     this.image = this.parseImage(this.gradient);
-    this.selectTabContent(this.image.type);        
+    this.selectTabContent(this.image.type);
   }
 
   /**
@@ -115,32 +116,29 @@ export default class DefaultGradientPicker extends BaseColorPicker {
     return /*html*/`
       <div class="el-gradientpicker--default gradient-picker">
         <div class='box'>
-          <div class='gradient-preview'>
-            <div class='gradient-view' ref='$gradientView'>
-            </div>
-          </div>
           <div class="picker-tab">
-            <div class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false">
+            <select class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false">
               ${tabs.map(it => {
                 return `
-                  <span 
-                    class='picker-tab-item ${it.selected ? "selected" : ''}' 
-                    data-selected-value='${it.type}'
-                    title='${it.title}'
-                  > 
-                  <div class='icon'></div>
-                  </span>`;
+                  <option value='${it.type}' title='${it.title}' > 
+                  ${it.title}
+                  </option>`;
               }).join('')}
+            </select>
+            <span></span>
+          </div>
+          <div class='gradient-preview'>
+            <div class='gradient-view' ref='$gradientView'>
+              <svg width="40" height="40" viewBox="0 0 95 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="47.5" cy="47.5" r="47.5" fill="white"/>
+                <path d="M46.6 33.1982C46.9643 32.4461 48.0357 32.4461 48.4 33.1982L61.45 60.1403C61.8607 60.9882 60.9782 61.8817 60.1253 61.4815L47.9248 55.7569C47.6557 55.6307 47.3443 55.6307 47.0752 55.7569L34.8747 61.4815C34.0218 61.8817 33.1392 60.9882 33.5499 60.1403L46.6 33.1982Z" fill="black"/>
+              </svg>
             </div>
           </div>
           <template target='GradientEditor'></template>
-
-        </div>
-        <div class='box'>
           <template target="EmbedColorPicker"></template>
         </div>
       </div>
-     
     `;
   }
 
@@ -162,7 +160,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
   'mousemove document' (e) {
     if (this.mouseDown) {
-
 
       var minX = this.rect.left;
       var maxX = this.rect.right;
@@ -196,7 +193,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
       return new ColorStep({
         color: it.color,
         percent: it.offset.value,
-        cut: it.cut,
         index: (index + 1)  * 100 
       })
     })
@@ -214,18 +210,16 @@ export default class DefaultGradientPicker extends BaseColorPicker {
   }
 
 
-  "click $tab .picker-tab-item" (e) {
-    const type = e.$delegateTarget.attr("data-selected-value");
-
+  "change $tab" (e) {
+    const type = e.target.value;
     this.selectTabContent(type);
   }
 
   selectTabContent(type) {
-    this.selectedTab = type;    
+    this.selectedTab = type;
     this.refs.$tab.attr("data-value", type);
 
     this.image = this.createGradient({ type }, this.image);
-
 
     this.$store.emit('setGradientEditor',   this.getColorString(), this.selectColorStepIndex, this.image.type, this.image.angle, this.image.radialPosition, this.image.radialType)   
 
@@ -233,8 +227,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
     this['@selectColorStep'](color);
 
-
-    this.updateGradientPreview();    
+    this.updateGradientPreview();
 
   }
 
@@ -306,10 +299,13 @@ export default class DefaultGradientPicker extends BaseColorPicker {
   }
 
   updateGradientPreview () {
-    if (this.image) {
-      this.refs.$gradientView.css('background-image', this.image.toString())
-      this.updateData();      
-    }
+    
+    if ( ! this.image ) return;
+
+    const angle = this.image.angle.value ? `${this.image.angle.value}${this.image.angle.unit}` : `${this.image.angle}deg`;
+    this.refs.$gradientView.el.style.setProperty('--gradientpicker-angle', angle);
+    this.refs.$gradientView.css('background-image', this.image.toString())
+    this.updateData();
 
   }
 

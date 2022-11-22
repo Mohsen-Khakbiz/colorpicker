@@ -9,7 +9,7 @@ export default class EmbedColorPicker extends UIElement {
     this.colorPicker = new ColorPickerUI({
       position: "inline",
       container: this.refs.$el.el,
-      ...options,      
+      ...options,
       onChange: c => {
         this.changeColor(c);
       },

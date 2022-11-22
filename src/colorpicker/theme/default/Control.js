@@ -31,9 +31,6 @@ export default class Control extends UIElement {
           <template target="Hue"></template>
           ${$opacity}
         </div>
-        <div class="el-cp-color-control__right">
-          <template target="ColorPreview"></template>
-        </div>
       </article>
     `;
   }

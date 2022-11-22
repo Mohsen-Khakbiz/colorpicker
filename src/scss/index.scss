@@ -6,19 +6,19 @@
   --color-blur: var(--cp-color-blur, #888);
   --color-pointer-fill: var(--cp-color-pointer-fill, #fff);
   // size
-  --size-width: var(--cp-size-width, 240px);
+  --size-width: var(--cp-size-width, 100%);
   --size-radius: var(--cp-size-radius, 2px);
   --size-side-padding: var(--cp-size-side-padding, 16px);
   --size-inner-padding: var(--cp-size-inner-padding, 10px);
-  --size-pointer: var(--cp-size-pointer, 12px);
-  --size-pointer-stroke: var(--cp-size-pointer-stroke, 3px);
+  --size-pointer: var(--cp-size-pointer, 15px);
+  --size-pointer-stroke: var(--cp-size-pointer-stroke, 2px);
   // palette
   --palette-width: var(--cp-palette-width, 100%);
   --palette-height: var(--cp-palette-height, 150px);
   // slider
-  --slider-height: var(--cp-slider-height, 8px);
-  --slider-radius: var(--cp-slider-radius, 4px);
-  --slider-stroke-color: var(--cp-slider-stroke-color, rgba(0,0,0,.15));
+  --slider-height: var(--cp-slider-height, 20px);
+  --slider-radius: var(--cp-slider-radius, 10px);
+  --slider-stroke-color: var(--cp-slider-stroke-color, rgba(0,0,0,.0));
   // preview
   --preview-size: var(--cp-preview-size, 36px);
   --preview-radius: var(--cp-preview-radius, 50%);
@@ -36,7 +36,7 @@
 
   // etc
   --shadow-outer: var(--cp-shadow-outer, 0 0 10px 2px rgba(0,0,0,.12), inset 0 0 0 1px rgba(0,0,0,.15));
-  --shadow-pointer: var(--cp-shadow-pointer, 0 0 2px 1px rgba(0,0,0,.5), inset 0 0 3px 0 rgba(0,0,0,.5));
+  --shadow-pointer: var(--cp-shadow-pointer, 0 0 2px 1px rgba(0,0,0,.5), inset 0 0 3px 0 rgba(0,0,0,.15));
   --shadow-pointer-active: var(--cp-shadow-pointer-active, inset 0 0 0 1px var(--color-key), 0 0 3px 1px var(--color-key));
   --speed-focus: var(--cp-speed-focus, 200ms);
 

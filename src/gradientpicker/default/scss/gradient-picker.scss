@@ -2,10 +2,17 @@
 
 .gradient-picker {
   box-sizing: border-box;
-  border: 1px solid #ececec;
+  --size-radius: 15px;
+  
+  .el-colorpicker{
+    --shadow-outer: none;
+    --size-radius: inherit;
+  }
+
   .gradient-body {
     display: grid;
     grid-template-columns: 1fr 224px;
+
     > div:first-child {
       padding: 5px;
       border-right: 1px solid var(--gradientpicker-border-color);
@@ -36,18 +43,43 @@
     height: 150px;
     position: relative;
     overflow: hidden;
+    border-radius: var(--size-radius);
     @include mixins.transparent-background();
+
     .gradient-view {
-      position: absolute;
       left: 0;
       top: 0;
       right: 0;
       bottom: 0;
+      
+      &,
+      svg {
+        position: absolute;
+      }
+      svg {
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        pointer-events: none;
+        opacity: 0;
+        transform: rotate(var(--gradientpicker-angle, 0deg));
+        transition: opacity 0.3s;
+      }
+
+      &:hover {
+
+        svg {
+          opacity: 1;
+        }
+      }
     }
   }
 
   .picker-tab {
-    margin-top: 4px;
+    margin-bottom: 4px;
+
+    select {
+      width: 100%;
+    }
     user-select: none;
     .picker-tab-list {
       text-align: center;
@@ -217,10 +249,5 @@
         }
       }
     }
-  }
-
-  .el-colorpicker{
-    --shadow-outer: none;
-    --size-radius: 0;
   }
 }

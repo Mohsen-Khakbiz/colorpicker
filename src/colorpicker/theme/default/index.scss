@@ -1,4 +1,5 @@
 .el-colorpicker--default {
+
   .el-colorpicker {
     &__wrap {
       position: relative;
@@ -6,11 +7,11 @@
     }
   }
   .el-cp-palette {
+
     &,
     &:before,
     &:after {
-      border-top-left-radius: var(--size-radius);
-      border-top-right-radius: var(--size-radius);
+      border-radius: var(--size-radius);
     }
   }
   .el-cp-color-control {

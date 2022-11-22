@@ -17,6 +17,9 @@ export default class Opacity extends BaseSlider {
           <span ref="$colorbar" class="el-cp-slider__bar"></span>
           <i ref="$bar" class="el-cp-slider__circle"></i>
         </p>
+        <label>
+          <input ref="$alpha" type="number" step="1" min="0" max="100"/>
+        </label>
       </nav>
     `;
   }
@@ -24,6 +27,7 @@ export default class Opacity extends BaseSlider {
   refresh() {
     super.refresh();
     this.setOpacityColorBar();
+    this.refs.$alpha.val( (this.$store.alpha * 100).toFixed(0) );
   }
 
   setOpacityColorBar() {
@@ -38,9 +42,17 @@ export default class Opacity extends BaseSlider {
 
   refreshColorUI(e) {
     const dist = this.getCalculatedDist(e);
+    const val = (Math.floor(dist) / 100) * this.maxValue;
     this.setColorUI((dist / 100) * this.maxValue);
     this.changeColor({
-      a: (Math.floor(dist) / 100) * this.maxValue,
+      a: val,
+    });
+    this.refs.$alpha.val( (val * 100).toFixed(0) );
+  }
+
+  ['input $alpha']() {
+    this.changeColor({
+      a: this.refs.$alpha.val() / 100,
     });
   }
 

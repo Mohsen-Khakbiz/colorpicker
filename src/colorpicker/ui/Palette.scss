@@ -43,5 +43,6 @@
     border: var(--size-pointer-stroke) solid var(--color-pointer-fill);
     box-shadow: var(--shadow-pointer);
     box-sizing: border-box;
+    cursor: move;
   }
 }
