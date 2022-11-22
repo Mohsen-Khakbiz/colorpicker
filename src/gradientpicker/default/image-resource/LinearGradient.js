@@ -4,17 +4,6 @@ import { Length } from "../Length";
 import { ColorStep } from "./ColorStep";
 import { isUndefined, isNumber } from '~/util/functions/func';
 
-const DEFINED_DIRECTIONS = {
-  "0": "to top",
-  "45": "to top right",
-  "90": "to right",
-  "135": "to bottom right",
-  "180": "to bottom",
-  "225": "to bottom left",
-  "270": "to left",
-  "315": "to top left"
-}; 
-
 const DEFINED_ANGLES = {
   "to top": "0",
   "to top right": "45",
@@ -59,7 +48,7 @@ export class LinearGradient extends Gradient {
     opt = angle;
 
     if (isNumber(opt)) {
-      opt = DEFINED_DIRECTIONS[`${opt}`] || opt;
+      opt = opt;
     }
 
     if (isNumber(opt)) {

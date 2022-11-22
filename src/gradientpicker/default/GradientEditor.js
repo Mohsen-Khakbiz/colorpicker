@@ -412,8 +412,6 @@ export default class GradientEditor extends UIElement  {
 
     let angle = this.angle.value != null ? this.angle.value : this.angle;
 
-    console.log(angle);
-
     this.refs.$angle.val(angle);
     this.refs.$angleNumber.val(angle);
 

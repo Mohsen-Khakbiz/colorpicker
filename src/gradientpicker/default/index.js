@@ -15,7 +15,6 @@ import { ColorStep } from './image-resource/ColorStep';
 
 
 const tabs = [
-  { type: "solid", title: "Solid" },
   { type: "linear-gradient", title: "Linear Gradient" },
   { type: "repeating-linear-gradient", title: "Repeating Linear Gradient" },
   { type: "radial-gradient", title: "Radial Gradient" },
