@@ -8,13 +8,12 @@ import { RepeatingRadialGradient } from "./RepeatingRadialGradient";
 import { URLImageResource } from "./URLImageResource";
 
 export default {
-  ColorStep,
-  ConicGradient,
-  LinearGradient,
-  RadialGradient,
-  RepeatingConicGradient,
-  RepeatingLinearGradient,
-  RepeatingRadialGradient,
-  URLImageResource
+	ColorStep,
+	ConicGradient,
+	LinearGradient,
+	RadialGradient,
+	RepeatingConicGradient,
+	RepeatingLinearGradient,
+	RepeatingRadialGradient,
+	URLImageResource
 };
-    

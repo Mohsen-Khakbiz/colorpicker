@@ -308,9 +308,9 @@ export default class GradientEditor extends UIElement {
 		this.refs.$stepList.html(
 			this.colorsteps
 				.map( ( it, index ) => {
-					return `<div class='step' data-index='${ index }' style='left: ${ it.offset };'>
+					return `<div class='step ${ this.colorsteps.length === 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
 						<div class='color-view' style="background-color: ${ it.color }"></div>
-						<button type="button" class="remove-step" style="float:right;" title="Remove color stop">&times;</button>
+						<button type="button" class="remove-step" title="Remove color stop">&times;</button>
 					</div>`;
 				} )
 				.join( '' )
