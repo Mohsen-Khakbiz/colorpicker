@@ -1,48 +1,52 @@
 .el-cp-palette {
-  position: relative;
-  width: var(--palette-width, 100%);
-  height: var(--palette-height, 150px);
-  cursor: default;
-  box-sizing: border-box;
-  background-color: var(--palette-bg, #eee);
+	position: relative;
+	width: var(--palette-width, 100%);
+	height: var(--palette-height, 150px);
+	cursor: default;
+	box-sizing: border-box;
+	background-color: var(--palette-bg, #eee);
+	margin-top: 10px;
 
-  &:before,
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  &:before {
-    background-color: rgba(204,154,129,0);
-    background-image: linear-gradient(to right, #fff, rgba(204,154,129,0));
-    background-repeat: repeat-x;
-  }
-  &:after {
-    background-image: linear-gradient(to top, #000, rgba(204,154,129,0));
-  }
-  &:active {
-    .el-cp-palette {
-      &__pointer {
-        box-shadow: var(--shadow-pointer-active);
-      }
-    }
-  }
+	&:before,
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
 
-  &__pointer {
-    display: block;
-    position: absolute;
-    z-index: 2;
-    width: var(--size-pointer);
-    height: var(--size-pointer);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    border: var(--size-pointer-stroke) solid var(--color-pointer-fill);
-    box-shadow: var(--shadow-pointer);
-    box-sizing: border-box;
-    cursor: move;
-  }
+	&:before {
+		background-color: rgba(204, 154, 129, 0);
+		background-image: linear-gradient(to right, #fff, rgba(204, 154, 129, 0));
+		background-repeat: repeat-x;
+	}
+
+	&:after {
+		background-image: linear-gradient(to top, #000, rgba(204, 154, 129, 0));
+	}
+
+	&:active {
+		.el-cp-palette {
+			&__pointer {
+				box-shadow: var(--shadow-pointer-active);
+			}
+		}
+	}
+
+	&__pointer {
+		display: block;
+		position: absolute;
+		z-index: 2;
+		width: var(--size-pointer);
+		height: var(--size-pointer);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		border: var(--size-pointer-stroke) solid var(--color-pointer-fill);
+		box-shadow: var(--shadow-pointer);
+		box-sizing: border-box;
+		cursor: move;
+	}
 }

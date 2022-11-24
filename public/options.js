@@ -37,7 +37,8 @@ const basicOpts = {
 const gradientOpts = {
 	// gradient: "linear-gradient(to right, red 0%, green 100%)",
 	colorpicker: {
-		color: '#BE08FE'
+		color: '#BE08FE',
+		swatchColors: [ "#ff0000", "#00ff00", "#0000ff" ],
 	},
 	onInit: ( self ) => {
 		custom = {

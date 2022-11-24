@@ -1,122 +1,134 @@
 .el-cp-color-form {
-  margin: 0;
-  padding: 0;
-  border: none;
-  legend {
-    font-size: 0;
-  }
-  &__wrap {
-    display: flex;
-    margin: 0;
-  }
-  &.hex {
-    .el-cp-color-field:nth-child(1) {
-      display: flex;
-    }
-  }
-  &.rgb {
-    .el-cp-color-field:nth-child(2) {
-      display: flex;
-    }
-  }
-  &.hsl {
-    .el-cp-color-field:nth-child(3) {
-      display: flex;
-    }
-  }
+	margin: 0;
+	padding: 0;
+	border: none;
+
+	legend {
+		font-size: 0;
+	}
+
+	&__wrap {
+		display: flex;
+		margin: 0;
+	}
+
+	&.hex {
+		.el-cp-color-field:nth-child(1) {
+			display: flex;
+		}
+	}
+
+	&.rgb {
+		.el-cp-color-field:nth-child(2) {
+			display: flex;
+		}
+	}
+
+	&.hsl {
+		.el-cp-color-field:nth-child(3) {
+			display: flex;
+		}
+	}
 }
 
 .el-cp-color-field {
-  flex: 1;
-  display: none;
-  gap: 4px;
-  label {
-    flex: 1;
-    display: block;
-    text-align: center;
-  }
-  input {
-    display: block;
-    width: 100%;
-    height: 24px;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: center;
-    box-shadow: inset 0 0 0 1px var(--form-border-color);
-    outline: none;
-    border: none;
-    background: var(--form-bg);
-    border-radius: 2px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-fill);
-    transition: box-shadow var(--speed-focus) ease-out;
-    -moz-appearance:textfield;
-    &:focus {
-      box-shadow: inset 0 1px 5px 0 var(--form-border-color), inset 0 0 0 1px var(--form-border-color), 0 0 0 2px var(--color-key);
-    }
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-    }
-  }
-  span {
-    display: block;
-    margin: 4px 0 0;
-    font-size: 10px;
-    line-height: 1.15;
-    color: var(--color-blur);
-  }
+	flex: 1;
+	display: none;
+	gap: 4px;
+
+	label {
+		flex: 1;
+		display: block;
+		text-align: center;
+	}
+
+	input {
+		display: block;
+		width: 100%;
+		height: 24px;
+		margin: 0;
+		padding: 0;
+		border: none;
+		outline: none;
+		box-sizing: border-box;
+		text-align: center;
+		border-radius: 2px;
+		font-size: 12px;
+		font-weight: 500;
+		transition: box-shadow var(--speed-focus) ease-out;
+		-moz-appearance: textfield;
+
+		&:focus {
+			box-shadow: inset 0 1px 5px 0 var(--form-border-color), inset 0 0 0 1px var(--form-border-color), 0 0 0 2px var(--color-key);
+		}
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
+	}
+
+	span {
+		display: block;
+		margin: 4px 0 0;
+		font-size: 10px;
+		line-height: 1.15;
+		color: var(--color-blur);
+	}
 }
 
 .el-cp-color-nav {
-  margin-left: var(--size-inner-padding);
-  &__label {
-    position: relative;
-    display: block;
-    box-sizing: border-box;
-    width: 36px;
-    height: 24px;
-    margin: 0;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    border-radius: 2px;
-    background: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: box-shadow var(--speed-focus) ease-out;
-    select {
-      display: block;
-      appearance: none;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-      opacity: 0;
-      outline: none;
-      cursor: pointer;
-    }
-    svg {
-      display: block;
-      margin: 0 auto;
-      color: var(--color-fill);
-      width: 20px;
-      height: 100%;
-      stroke-width: 1.5px;
-      transition: transform var(--speed-focus) ease-out;
-      transform-origin: 50% 50%;
-    }
-    &:focus-within {
-      box-shadow: 0 0 0 2px var(--color-key);
-    }
-    &:active {
-      svg {
-        transform: rotateZ(90deg);
-      }
-    }
-  }
+	margin-left: var(--size-inner-padding);
+
+	&__label {
+		position: relative;
+		display: block;
+		box-sizing: border-box;
+		width: 36px;
+		height: 24px;
+		margin: 0;
+		padding: 0;
+		border: none;
+		cursor: pointer;
+		outline: none;
+		border-radius: 2px;
+		background: none;
+		-webkit-tap-highlight-color: transparent;
+		transition: box-shadow var(--speed-focus) ease-out;
+
+		select {
+			display: block;
+			appearance: none;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			opacity: 0;
+			outline: none;
+			cursor: pointer;
+		}
+
+		svg {
+			display: block;
+			margin: 0 auto;
+			color: var(--color-fill);
+			width: 20px;
+			height: 100%;
+			stroke-width: 1.5px;
+			transition: transform var(--speed-focus) ease-out;
+			transform-origin: 50% 50%;
+		}
+
+		&:focus-within {
+			box-shadow: 0 0 0 2px var(--color-key);
+		}
+
+		&:active {
+			svg {
+				transform: rotateZ(90deg);
+			}
+		}
+	}
 }

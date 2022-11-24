@@ -1,70 +1,79 @@
 @use "../../scss/mixins";
 
 .el-cp-swatches {
-  &__header {
-    display: flex;
-    align-items: center;
-    margin: 0 0 16px;
-    h2 {
-      flex: 1;
-      margin: 0;
-      cursor: auto;
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1.15;
-    }
-  }
+	&__header {
+		display: flex;
+		align-items: center;
+		margin: 0 0 16px;
+
+		h2 {
+			flex: 1;
+			margin: 0;
+			cursor: auto;
+			font-size: 12px;
+			font-weight: 600;
+			line-height: 1.15;
+		}
+	}
 }
 
 .el-cp-colors {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(var(--swatch-column, 5), 1fr);
-  gap: var(--swatch-gap, 10px);
-  > li {
-    button {
-      display: block;
-      width: var(--swatch-item-size, 20px);
-      height: var(--swatch-item-size, 20px);
-      font-size: 0;
-      border: none;
-      border-radius: var(--swatch-item-stroke-radius);
-      margin: 0 auto;
-      padding: 0;
-      cursor: pointer;
-      outline: none;
-      box-sizing: border-box;
-      transition: box-shadow var(--speed-focus) ease-out;
-      &:active {
-        opacity: .5;
-      }
-    }
-  }
-  &__item {
-    position: relative;
-    @include mixins.transparent-background(12px);
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      display: block;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      border-radius: var(--swatch-item-stroke-radius);
-    }
-    &:before {
-      background-color: var(--color);
-    }
-    &:after {
-      box-shadow: inset 0 0 0 1px var(--swatch-item-stroke-color);
-    }
-    &:focus,
-    &:disabled {
-      box-shadow: 0 0 0 2px var(--color-key);
-    }
-  }
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	place-items: start;
+	grid-template-columns: repeat(var(--swatch-column, 5), 1fr);
+	gap: var(--swatch-gap, 10px);
+
+	>li {
+		button {
+			display: block;
+			width: var(--swatch-item-size, 20px);
+			height: var(--swatch-item-size, 20px);
+			font-size: 0;
+			border: none;
+			border-radius: var(--swatch-item-stroke-radius);
+			margin: 0 auto;
+			padding: 0;
+			cursor: pointer;
+			outline: none;
+			box-sizing: border-box;
+			transition: box-shadow var(--speed-focus) ease-out;
+
+			&:active {
+				opacity: .5;
+			}
+		}
+	}
+
+	&__item {
+		position: relative;
+		@include mixins.transparent-background(12px);
+
+		&:before,
+		&:after {
+			content: '';
+			position: absolute;
+			display: block;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			border-radius: var(--swatch-item-stroke-radius);
+		}
+
+		&:before {
+			background-color: var(--color);
+		}
+
+		&:after {
+			box-shadow: inset 0 0 0 1px var(--swatch-item-stroke-color);
+		}
+
+		&:focus,
+		&:disabled {
+			box-shadow: 0 0 0 2px var(--color-key);
+		}
+	}
 }
