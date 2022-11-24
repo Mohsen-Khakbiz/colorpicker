@@ -35,10 +35,10 @@ const basicOpts = {
 };
 
 const gradientOpts = {
-	gradient: "linear-gradient(to right, red 0%, green 100%)",
-	// colorpicker: {
-	// 	color: '#BE08FE'
-	// },
+	// gradient: "linear-gradient(to right, red 0%, green 100%)",
+	colorpicker: {
+		color: '#BE08FE'
+	},
 	onInit: ( self ) => {
 		custom = {
 			$color: document.querySelector( "#gradientSample > i" ),
