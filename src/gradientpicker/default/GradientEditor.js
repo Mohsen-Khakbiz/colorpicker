@@ -1,95 +1,113 @@
-import Color from "@easylogic/color";
-import UIElement from "~/colorpicker/UIElement";
-import { calculateAngle, round } from "~/util/functions/math";
-import { Length } from "./Length";
-
+import Color from '@easylogic/color';
+import UIElement from '~/colorpicker/UIElement';
+import { calculateAngle, round } from '~/util/functions/math';
+import { Length } from './Length';
 
 var radialTypeList = [
-  'circle',
-  'circle closest-side',
-  'circle closest-corner',
-  'circle farthest-side',
-  'circle farthest-corner',
-  'ellipse',
-  'ellipse closest-side',
-  'ellipse closest-corner',
-  'ellipse farthest-side', 
-  'ellipse farthest-corner' 
-]
+	'circle',
+	'circle closest-side',
+	'circle closest-corner',
+	'circle farthest-side',
+	'circle farthest-corner',
+	'ellipse',
+	'ellipse closest-side',
+	'ellipse closest-corner',
+	'ellipse farthest-side',
+	'ellipse farthest-corner',
+];
 
-export default class GradientEditor extends UIElement  {
+export default class GradientEditor extends UIElement {
+	initialize() {
+		super.initialize();
 
-  initialize() {
-    super.initialize();
+		const defaultColor = Color.random();
+		var colorsteps = [
+			{ offset: Length.percent( 0 ), color: defaultColor },
+			{ offset: Length.percent( 100 ), color: Color.blend( defaultColor, Color.random(), 1 ) },
+		];
 
-    var colorsteps = [
-      { offset: Length.percent(0), color: 'yellow' },
-      { offset: Length.percent(100), color: 'red' }
-    ] 
+		this.type = 'solid';
+		this.index = 0;
+		this.colorsteps = colorsteps;
+		this.radialPosition = [ Length.percent( 50 ), Length.percent( 50 ) ];
+		this.radialType = 'ellipse';
+	}
 
-    this.type = 'linear-gradient'
-    this.index = 0
-    this.colorsteps = colorsteps;
-    this.radialPosition = [ Length.percent(50), Length.percent(50)]
-    this.radialType = 'ellipse'
-  }
+	'@changeRadialPosition'( posX, posY ) {
+		if ( this.type.includes( 'linear-gradient' ) ) {
+			this[ '@changeKeyValue' ](
+				'angle',
+				Length.deg(
+					calculateAngle( posX.value - 50, posY.value - 50 ).toFixed( 0 )
+				)
+			);
+		} else {
+			this[ '@changeKeyValue' ]( 'radialPosition', [ posX, posY ] );
+		}
 
-  '@changeRadialPosition' (posX, posY) {
+		this.reloadInputValue();
+	}
 
-    if (this.type.includes('linear-gradient')) {
-      this['@changeKeyValue'] ('angle', Length.deg(calculateAngle(posX.value - 50, posY.value - 50).toFixed(0)));
-    }  else {
-      this['@changeKeyValue'] ('radialPosition', [posX, posY]);
-    }
+	'@setGradientEditor'( str, index = 0, type = 'solid', angle, radialPosition, radialType ) {
 
-    this.reloadInputValue();
-  }
+		this.toggleComponents( type );
 
-  '@setGradientEditor' (str, index = 0, type = 'linear-gradient', angle, radialPosition, radialType) {
-    var results = Color.convertMatches(str);
-    var colorsteps = results.str.split(',').map(it => it.trim()).map(it => {
-      var [color, offset1, offset2 ] = it.split(' ').filter(str => str.length);
+		if ( type === 'solid' ) {
 
-       color = Color.reverseMatches(color, results.matches);
+			this.color = str;
+			this.type = type;
 
-        var offset = Length.parse(offset1)
+			this.refresh();
+			this.selectStep( 0 );
+			this.reloadInputValue();
 
-      if (offset.isDeg()) {
-        offset = Length.percent(offset.value/360 * 100)
-      }
+			return;
+		}
 
-      return { color, offset }
+		if ( !str || str === '' ) {
+			str = `${ this.color } 0%`;
+		}
 
-    })
+		var results = Color.convertMatches( str );
+		var colorsteps = results.str
+			.split( ',' )
+			.map( it => it.trim() )
+			.map( it => {
+				var [ color, offset1 ] = it.split( ' ' ).filter( str => str.length );
+				var offset = Length.parse( offset1 );
+				color = Color.reverseMatches( color, results.matches );
+				if ( offset.isDeg() ) {
+					offset = Length.percent( ( offset.value / 360 ) * 100 );
+				}
+				return { color, offset };
+			} );
 
-    if (colorsteps.length == 1)  {
-      colorsteps.push({
-        color: colorsteps[0].color,
-        offset: Length.percent(100)
-      })
-    }
+		if ( colorsteps.length === 1 ) {
+			colorsteps.push( {
+				color: colorsteps[ 0 ].color,
+				offset: Length.percent( 100 ),
+			} );
+		}
 
-    this.cachedStepListRect = null;
+		this.cachedStepListRect = null;
 
-    this.colorsteps = colorsteps;
-    this.index = index;
-    this.type = type; 
-    this.angle = Length.parse(angle || '0deg');
-    this.radialPosition = radialPosition || [Length.percent(50), Length.percent(50)]
-    this.radialType = radialType
+		this.colorsteps = colorsteps;
+		this.index = index;
+		this.type = type;
+		this.angle = Length.parse( angle || '0deg' );
+		this.radialPosition = radialPosition || [ Length.percent( 50 ), Length.percent( 50 ), ];
+		this.radialType = radialType;
 
+		this.refresh();
+		this.selectStep( index );
+		this.reloadInputValue();
 
-    this.refresh();
+	}
 
-    this.selectStep(index);
-
-    this.reloadInputValue();
-  }
-
-  template() {
-    return /*html*/`
-        <div class='gradient-editor' data-selected-editor='${this.type}'>
-            <div class='gradient-steps' data-editor='gradient'>
+	template() {
+		return /*html*/ `
+        <div class='gradient-editor' data-selected-editor='${ this.type }'>
+            <div class='gradient-steps' data-editor='gradient' ref="$gradientSteps">
                 <div class="hue-container" ref="$back"></div>
                 <div class="hue" ref="$steps">
                     <div class='step-list' ref="$stepList" ></div>
@@ -131,329 +149,366 @@ export default class GradientEditor extends UIElement  {
               <div data-editor='radialType'>
                 <label>Type</label>
                 <div><select ref='$radialType'>
-                  ${radialTypeList.map(k => {
-                      var selected = this.radialType === k ? 'selected' : '';
-                    return `<option value="${k}" ${selected}>${k}</option>`
-                  }).join('')}
+                  ${ radialTypeList
+				.map( ( k ) => {
+					var selected =
+						this.radialType === k ? 'selected' : '';
+					return `<option value="${ k }" ${ selected }>${ k }</option>`;
+				} )
+				.join( '' ) }
                 </select></div>
               </div>
             </div>
         </div>
       `;
-  }
+	}
 
-  'input $angle' (e) {
-    this.refs.$angleNumber.val(this.refs.$angle.val())
-    this['@changeKeyValue'] ('angle', Length.deg(this.refs.$angle.val()))
-  }
+	'input $angle'( e ) {
+		this.refs.$angleNumber.val( this.refs.$angle.val() );
+		this[ '@changeKeyValue' ]( 'angle', Length.deg( this.refs.$angle.val() ) );
+	}
+	'input $angleNumber'( e ) {
+		this.refs.$angle.val( this.refs.$angleNumber.val() );
+		this[ '@changeKeyValue' ]( 'angle', Length.deg( this.refs.$angle.val() ) );
+	}
 
-  'input $angleNumber' (e) {
-    this.refs.$angle.val(this.refs.$angleNumber.val())
-    this['@changeKeyValue'] ('angle', Length.deg(this.refs.$angle.val()))
-  }
+	'input $centerX'( e ) {
+		this.refs.$centerXNumber.val( this.refs.$centerX.val() );
+		this[ '@changeKeyValue' ]( 'radialPositionX' );
+	}
+	'input $centerXNumber'( e ) {
+		this.refs.$centerX.val( this.refs.$centerXNumber.val() );
+		this[ '@changeKeyValue' ]( 'radialPositionX' );
+	}
 
-  'input $centerX' (e) {
-    this.refs.$centerXNumber.val(this.refs.$centerX.val())    
-    this['@changeKeyValue'] ('radialPositionX')
-  }
-  'input $centerXNumber' (e) {
-    this.refs.$centerX.val(this.refs.$centerXNumber.val())
-    this['@changeKeyValue'] ('radialPositionX')
-  }
+	'input $centerY'( e ) {
+		this.refs.$centerYNumber.val( this.refs.$centerY.val() );
+		this[ '@changeKeyValue' ]( 'radialPositionY' );
+	}
+	'input $centerYNumber'( e ) {
+		this.refs.$centerY.val( this.refs.$centerYNumber.val() );
+		this[ '@changeKeyValue' ]( 'radialPositionX' );
+	}
 
-  'input $centerY' (e) {
-    this.refs.$centerYNumber.val(this.refs.$centerY.val())
-    this['@changeKeyValue'] ('radialPositionY')
-  }
-  'input $centerYNumber' (e) {
-    this.refs.$centerY.val(this.refs.$centerYNumber.val())
-    this['@changeKeyValue'] ('radialPositionX')
-  }
+	'change $centerXSelect'( e ) {
+		this[ '@changeKeyValue' ]( 'radialPositionX' );
+	}
 
-  'change $centerXSelect' (e) {
-    this['@changeKeyValue'] ('radialPositionX')
-  }
+	'change $centerYSelect'( e ) {
+		this[ '@changeKeyValue' ]( 'radialPositionY' );
+	}
 
-  'change $centerYSelect' (e) {
-    this['@changeKeyValue'] ('radialPositionY')
-  }
+	get radialPositionX() {
+		return new Length(
+			+this.refs.$centerX.val(),
+			this.refs.$centerXSelect.val()
+		);
+	}
 
-  get radialPositionX () {
-    return new Length(+this.refs.$centerX.val(), this.refs.$centerXSelect.val())
-  }
+	get radialPositionY() {
+		return new Length(
+			+this.refs.$centerY.val(),
+			this.refs.$centerYSelect.val()
+		);
+	}
 
-  get radialPositionY () {
-    return new Length(+this.refs.$centerY.val(), this.refs.$centerYSelect.val())
-  }
+	'change $radialType'( e ) {
+		this[ '@changeKeyValue' ]( 'radialType', this.refs.$radialType.val() );
+	}
 
-  'change $radialType' (e) {
-    this['@changeKeyValue'] ('radialType', this.refs.$radialType.val())
-  }
+	'@changeKeyValue'( key, value ) {
+		if ( key === 'angle' ) {
+			value = value.value;
+		}
 
-  '@changeKeyValue' (key, value) {
+		if ( key === 'radialPositionX' || key === 'radialPositionY' ) {
+			this[ 'radialPosition' ] = [
+				this.radialPositionX,
+				this.radialPositionY,
+			];
+		} else {
+			this[ key ] = value;
+		}
 
-    if (key === 'angle') {
-      value = value.value;
-    }
+		this.updateData();
+	}
 
-    if (key === 'radialPositionX' || key === 'radialPositionY') {
-      this['radialPosition'] = [this.radialPositionX, this.radialPositionY] 
-    } else {
-      this[key] = value;
-    }
+	'@changeColorStepOffset'( key, value ) {
+		if ( this.currentStep ) {
+			this.currentStep.offset = value.clone();
+			this.$currentStep.css( {
+				left: this.currentStep.offset,
+			} );
+			this.setColorUI();
+			this.updateData();
+		}
+	}
 
-    this.updateData();
-  }
+	'click $back'( e ) {
+		if ( this.startXY ) return;
 
-  '@changeColorStepOffset' (key, value) {
-    if (this.currentStep) {
-      this.currentStep.offset = value.clone();
-      this.$currentStep.css({
-        left: this.currentStep.offset
-      })
-      this.setColorUI()
-      this.updateData();
-    }
-  }
+		var rect = this.refs.$stepList.rect();
 
-  'click $back' (e) {
-    if (this.startXY) return; 
+		var minX = rect.x;
+		var maxX = rect.right;
 
-    var rect = this.refs.$stepList.rect();
+		var x = e.xy.x;
 
-    var minX = rect.x;
-    var maxX = rect.right;
+		if ( x < minX ) {
+			x = minX;
+		} else if ( x > maxX ) {
+			x = maxX;
+		}
+		var percent = ( ( x - minX ) / rect.width ) * 100;
 
-    var x = e.xy.x 
+		var list = this.colorsteps.map( ( it, index ) => ( { index, color: it.color, offset: it.offset } ) );
 
-    if (x < minX)  x = minX
-    else if (x > maxX) x = maxX
-    var percent = (x - minX) / rect.width * 100;
+		var prev = list.filter( it => it.offset.value <= percent ).pop();
+		var next = list.filter( it => it.offset.value >= percent ).shift();
+		var ind;
 
-    var list = this.colorsteps.map((it, index) => { 
-      return {index, color : it.color, offset: it.offset}
-    })
+		if ( prev && next ) {
+			ind = next.index;
+			this.colorsteps.splice( ind, 0, {
+				offset: Length.percent( percent ),
+				color: Color.mix(
+					prev.color,
+					next.color,
+					( percent - prev.offset.value ) /
+					( next.offset.value - prev.offset.value )
+				),
+			} );
+		} else if ( prev ) {
+			ind = prev.index + 1;
+			this.colorsteps.splice( ind, 0, {
+				offset: Length.percent( percent ),
+				color: 'rgba(0, 0, 0, 1)',
+			} );
+		} else if ( next ) {
+			this.colorsteps.unshift( {
+				offset: Length.percent( percent ),
+				color: 'rgba(0, 0, 0, 1)',
+			} );
+			ind = 0;
+		} else {
+			this.colorsteps.push( {
+				offset: Length.percent( 0 ),
+				color: 'rgba(0, 0, 0, 1)',
+			} );
+			ind = this.colorsteps[ this.colorsteps.length - 1 ];
+		}
 
-    var prev = list.filter(it => it.offset.value <= percent).pop();
-    var next = list.filter(it => it.offset.value >= percent).shift();
-    var ind;
+		this.refresh();
+		this.updateData();
 
-    if (prev && next) {
-      ind = next.index;
-      this.colorsteps.splice(ind, 0, {
-        offset: Length.percent(percent),
-        color: Color.mix(prev.color, next.color, ( percent - prev.offset.value )/(next.offset.value - prev.offset.value))
-      })
-    } else if (prev) {
-      ind = prev.index + 1;
-      this.colorsteps.splice(ind, 0, {
-        offset: Length.percent(percent),
-        color: 'rgba(0, 0, 0, 1)'
-      })
-    } else if (next) {
-      this.colorsteps.unshift({
-        offset: Length.percent(percent),
-        color: 'rgba(0, 0, 0, 1)'
-      })
-      ind = 0;
-    } else {
-      this.colorsteps.push({
-        offset: Length.percent(0),
-        color: 'rgba(0, 0, 0, 1)'
-      })
-      ind = this.colorsteps[this.colorsteps.length - 1];
-    }
+		this.selectStep( ind );
+	}
 
-    this.refresh();
-    this.updateData();
+	reloadStepList() {
+		this.refs.$stepList.html(
+			this.colorsteps
+				.map( ( it, index ) => {
+					return `<div class='step' data-index='${ index }' style='left: ${ it.offset };'>
+						<div class='color-view' style="background-color: ${ it.color }"></div>
+						<button type="button" class="remove-step" style="float:right;" title="Remove color stop">&times;</button>
+					</div>`;
+				} )
+				.join( '' )
+		);
+	}
 
-    this.selectStep(ind);
-  }
+	'click $stepList .remove-step'() {
+		this.removeStep( this.index );
+	}
 
-  reloadStepList () {
-    this.refs.$stepList.html(this.colorsteps.map( (it, index) => {
-      return `<div class='step' data-index='${index}' style='left: ${it.offset};'>
-        <div class='color-view' style="background-color: ${it.color}"></div>
-        <button type="button" class="remove-step" style="float:right;" title="Remove color stop">&times;</button>
-      </div>`
-    }).join(''))
-  }
+	removeStep( index ) {
+		if ( this.colorsteps.length === 2 ) return;
+		this.colorsteps.splice( index, 1 );
+		var currentStep = this.colorsteps[ index ];
+		var currentIndex = index;
+		if ( !currentStep ) {
+			currentStep = this.colorsteps[ index - 1 ];
+			currentIndex = index - 1;
+		}
 
-  'click $stepList .remove-step' () {
-    this.removeStep(this.index)
-  }
+		if ( currentStep ) {
+			this.selectStep( currentIndex );
+		}
+		this.refresh();
+		this.updateData();
+	}
 
-  removeStep(index) {
-    if (this.colorsteps.length === 2) return;
-    this.colorsteps.splice(index, 1);
-    var currentStep = this.colorsteps[index]
-    var currentIndex = index; 
-    if (!currentStep) {
-      currentStep = this.colorsteps[index-1]
-      currentIndex = index - 1; 
-    }
+	selectStep( index ) {
+		this.index = index;
+		this.currentStep = this.colorsteps[ index ];
+		this.refs.$stepList.attr( 'data-selected-index', index );
+		this.$currentStep = this.refs.$stepList.$(
+			`[data-index="${ index.toString() }"]`
+		);
+		if ( this.$currentStep ) {
+			this.$colorView = this.$currentStep.$( '.color-view' );
+		}
+		this.prev = this.colorsteps[ index - 1 ];
+		this.next = this.colorsteps[ index + 1 ];
 
-    if (currentStep) {
-      this.selectStep(currentIndex);
-    }
-    this.refresh();
-    this.updateData();
-  }
+		this.refs.$stepList.$$( '.step' ).forEach( ( step ) => {
+			step.attr( 'data-is-active', false );
+		} );
+		this.$currentStep.attr( 'data-is-active', true );
+	}
 
-  selectStep(index) {
-    this.index = index; 
-    this.currentStep = this.colorsteps[index];
-    this.refs.$stepList.attr('data-selected-index', index);
-    this.$currentStep = this.refs.$stepList.$(`[data-index="${index.toString()}"]`)
-    if (this.$currentStep) {
-      this.$colorView = this.$currentStep.$('.color-view');
-    }
-    this.prev = this.colorsteps[index-1];
-    this.next = this.colorsteps[index+1];
+	'mousedown $stepList .step'( e ) {
+		var index = +e.$delegateTarget.attr( 'data-index' );
 
-    this.refs.$stepList.$$('.step').forEach(step => {
-      step.attr('data-is-active', false);
-    })
-    this.$currentStep.attr('data-is-active', true);
-  }
+		if ( e.altKey ) {
+			this.removeStep( index );
+		} else {
+			this.selectStep( index );
+			this.startXY = e.xy;
+			this.$store.emit( 'selectColorStep', this.currentStep.color );
+			// this.refs.$offset.val(this.currentStep.offset.value);
+			this.refs.$stepList.attr( 'data-selected-index', index );
+			this.cachedStepListRect = this.refs.$stepList.rect();
+		}
+	}
 
-  'mousedown $stepList .step' (e) {
-    var index = +e.$delegateTarget.attr('data-index');
+	getStepListRect() {
+		return this.cachedStepListRect;
+	}
 
-    if (e.altKey) {
-      this.removeStep(index);
-    } else {
-      this.selectStep(index);
-      this.startXY = e.xy;
-      this.$store.emit('selectColorStep', this.currentStep.color)
-      // this.refs.$offset.val(this.currentStep.offset.value);
-      this.refs.$stepList.attr('data-selected-index', index);
-      this.cachedStepListRect = this.refs.$stepList.rect();
-    }
-  }
+	'mouseup document'( e ) {
+		if ( this.startXY ) {
+			this.startXY = null;
+		}
+	}
 
-  getStepListRect () {
-    return this.cachedStepListRect;
-  }
+	'mousemove document'( e ) {
+		if ( !this.startXY ) return;
 
-  'mouseup document' (e) {
-    if (this.startXY) {
-      this.startXY = null; 
-    }
-  }
+		var dx = e.xy.x - this.startXY.x;
+		var dy = e.xy.y - this.startXY.y;
 
-  'mousemove document' (e) { 
-    if (!this.startXY) return; 
+		var rect = this.getStepListRect();
 
-    var dx = e.xy.x - this.startXY.x;
-    var dy = e.xy.y - this.startXY.y;
+		var minX = rect.x;
+		var maxX = rect.right;
 
-    var rect = this.getStepListRect()
-    
-    var minX = rect.x;
-    var maxX = rect.right;
+		var x = this.startXY.x + dx;
 
-    var x = this.startXY.x + dx 
+		if ( x < minX ) {
+			x = minX
+		} else if ( x > maxX ) {
+			x = maxX
+		};
+		var percent = ( ( x - minX ) / rect.width ) * 100;
 
-    if (x < minX)  x = minX
-    else if (x > maxX) x = maxX
-    var percent = (x - minX) / rect.width * 100;
+		if ( this.prev ) {
+			if ( this.prev.offset.value > percent ) {
+				percent = this.prev.offset.value;
+			}
+		}
 
-    if (this.prev) {
-      if (this.prev.offset.value > percent) {
-        percent = this.prev.offset.value
-      }
-    }
+		if ( this.next ) {
+			if ( this.next.offset.value < percent ) {
+				percent = this.next.offset.value;
+			}
+		}
 
-    if (this.next) {
-      if (this.next.offset.value < percent) {
-        percent = this.next.offset.value
-      }
-    }
+		this.currentStep.offset.set( round( percent, 100 ) );
+		this.$currentStep.css( {
+			left: Length.percent( percent ),
+		} );
+		// this.refs.$offset.val(this.currentStep.offset.value);
+		this.setColorUI();
+		this.updateData();
+	}
 
-    this.currentStep.offset.set(round(percent, 100));
-    this.$currentStep.css({
-      left: Length.percent(percent)
-    })
-    // this.refs.$offset.val(this.currentStep.offset.value);
-    this.setColorUI()
-    this.updateData();
-  }
+	refresh() {
+		this.reloadStepList();
+		this.setColorUI();
+	}
 
+	getLinearGradient() {
+		if ( this.colorsteps.length === 0 ) {
+			return '';
+		}
 
-  refresh() {
-    this.reloadStepList();
-    this.setColorUI();
-  }
+		if ( this.colorsteps.length === 1 ) {
+			var colorstep = this.colorsteps[ 0 ];
+			return `linear-gradient(to right, ${ colorstep.color } ${ colorstep.offset }, ${ colorstep.color } 100%)`;
+		}
 
-  getLinearGradient () {
-    if (this.colorsteps.length === 0) {
-      return '';
-    }
+		return `linear-gradient(to right, ${ this.colorsteps
+			.map( it => {
+				return `${ it.color } ${ it.offset }`;
+			} )
+			.join( ',' ) })`;
+	}
 
-    if (this.colorsteps.length === 1) {
-      var colorstep = this.colorsteps[0];
-      return `linear-gradient(to right, ${colorstep.color} ${colorstep.offset}, ${colorstep.color} 100%)`
-    }
+	setColorUI() {
+		this.refs.$stepList.css( 'background-image', this.getLinearGradient() );
+		this.refs.$el.attr( 'data-selected-editor', this.type );
+	}
 
-    return `linear-gradient(to right, ${this.colorsteps.map((it, index) => {
+	reloadInputValue() {
 
-      return `${it.color} ${it.offset}`
+		if ( this.type === 'solid' ) return;
 
-    }).join(',')})`
-  }
+		let angle = this.angle.value != null ? this.angle.value : this.angle;
 
-  setColorUI() {
-    this.refs.$stepList.css( "background-image", this.getLinearGradient());
-    this.refs.$el.attr( "data-selected-editor", this.type);
-  }
+		this.refs.$angle.val( angle );
+		this.refs.$angleNumber.val( angle );
 
-  reloadInputValue () {
+		const radialPosition = this.radialPosition.map( ( it ) => {
+			if ( it === 'center' ) {
+				return Length.percent( 50 );
+			}
+			return it;
+		} );
 
-    let angle = this.angle.value != null ? this.angle.value : this.angle;
+		this.refs.$centerX.val( radialPosition[ 0 ].value );
+		this.refs.$centerXNumber.val( radialPosition[ 0 ].value );
+		this.refs.$centerXSelect.val( radialPosition[ 0 ].unit );
 
-    this.refs.$angle.val(angle);
-    this.refs.$angleNumber.val(angle);
+		this.refs.$centerY.val( radialPosition[ 1 ].value );
+		this.refs.$centerYNumber.val( radialPosition[ 1 ].value );
+		this.refs.$centerYSelect.val( radialPosition[ 1 ].unit );
 
-    const radialPosition = this.radialPosition.map(it => {
-      if (it === 'center') {
-        return Length.percent(50);
-      }
+		this.refs.$radialType.val( this.radialType );
+	}
 
-      return it;
-    });
+	'@setColorStepColor'( color ) {
+		if ( this.currentStep ) {
+			this.currentStep.color = color;
+			this.$colorView.css( {
+				'background-color': color,
+			} );
+			this.setColorUI();
+			this.updateData();
+		}
+	}
 
-    this.refs.$centerX.val(radialPosition[0].value);
-    this.refs.$centerXNumber.val(radialPosition[0].value);
-    this.refs.$centerXSelect.val(radialPosition[0].unit);
+	updateData() {
+		this.$store.emit( 'changeGradientEditor', {
+			type: this.type,
+			index: this.index,
+			angle: this.angle,
+			colorsteps: this.colorsteps,
+			radialPosition: this.radialPosition,
+			radialType: this.radialType,
+		} );
+	}
 
-    this.refs.$centerY.val(radialPosition[1].value);
-    this.refs.$centerYNumber.val(radialPosition[1].value);
-    this.refs.$centerYSelect.val(radialPosition[1].unit);        
+	toggleComponents( type ) {
 
-    this.refs.$radialType.val(this.radialType);
-  }
+		if ( type === 'solid' ) {
+			this.refs.$gradientSteps.css( 'display', 'none' );
+			this.refs.$subEditor.css( 'display', 'none' );
+		} else {
+			this.refs.$gradientSteps.css( 'display', '' );
+			this.refs.$subEditor.css( 'display', '' );
+		}
 
-  '@setColorStepColor' (color) {
-    if (this.currentStep) {
-      this.currentStep.color = color;
-      this.$colorView.css({
-        'background-color': color
-      })
-      this.setColorUI()
-      this.updateData();
-    }
-  }
-
-  updateData() {
-    this.$store.emit('changeGradientEditor', {
-      type: this.type,
-      index: this.index,
-      angle: this.angle,
-      colorsteps: this.colorsteps,
-      radialPosition: this.radialPosition,
-      radialType: this.radialType
-    });
-  }
+	}
 
 }

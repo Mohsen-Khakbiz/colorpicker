@@ -47,40 +47,22 @@
     @include mixins.transparent-background();
 
     .gradient-view {
+      position: absolute;
       left: 0;
       top: 0;
       right: 0;
       bottom: 0;
-      
-      &,
-      svg {
-        position: absolute;
-      }
-      svg {
-        top: calc(50% - 20px);
-        left: calc(50% - 20px);
-        pointer-events: none;
-        opacity: 0;
-        transform: rotate(var(--gradientpicker-angle, 0deg));
-        transition: opacity 0.3s;
-      }
-
-      &:hover {
-
-        svg {
-          opacity: 1;
-        }
-      }
     }
   }
 
   .picker-tab {
     margin-bottom: 4px;
+    -webkit-user-select: none;
+    user-select: none;
 
     select {
       width: 100%;
     }
-    user-select: none;
     .picker-tab-list {
       text-align: center;
       padding: 2px 0;

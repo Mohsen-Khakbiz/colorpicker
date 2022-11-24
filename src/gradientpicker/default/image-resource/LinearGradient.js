@@ -5,103 +5,102 @@ import { ColorStep } from "./ColorStep";
 import { isUndefined, isNumber } from '~/util/functions/func';
 
 const DEFINED_ANGLES = {
-  "to top": "0",
-  "to top right": "45",
-  "to right": "90",
-  "to bottom right": "135",
-  "to bottom": "180",
-  "to bottom left": "225",
-  "to left": "270",
-  "to top left": "315"
+	"to top": "0",
+	"to top right": "45",
+	"to right": "90",
+	"to bottom right": "135",
+	"to bottom": "180",
+	"to bottom left": "225",
+	"to left": "270",
+	"to top left": "315"
 };
 
 export class LinearGradient extends Gradient {
-  getDefaultObject(obj = {}) {
-    return super.getDefaultObject({
-      type: "linear-gradient",
-      angle: 0,
-      ...obj
-    });
-  }
+	getDefaultObject( obj = {} ) {
+		return super.getDefaultObject( {
+			type: "linear-gradient",
+			angle: 0,
+			...obj
+		} );
+	}
 
-  toCloneObject() {
-    return {
-      ...super.toCloneObject(),
-      angle: this.json.angle
-    }
-  }
+	toCloneObject() {
+		return {
+			...super.toCloneObject(),
+			angle: this.json.angle
+		}
+	}
 
-  isLinear() {
-    return true;
-  }
-  hasAngle() {
-    return true;
-  }
+	isLinear() {
+		return true;
+	}
+	hasAngle() {
+		return true;
+	}
 
-  toString() {
-    if(this.colorsteps.length === 0) return '';        
-    var colorString = this.getColorString();
+	toString() {
+		if ( this.colorsteps.length === 0 ) return '';
+		var colorString = this.getColorString();
 
-    var opt = '';
-    var angle = this.json.angle || 0;
+		var opt = '';
+		var angle = this.json.angle || 0;
 
-    opt = angle;
+		opt = angle;
 
-    if (isNumber(opt)) {
-      opt = opt;
-    }
+		if ( isNumber( opt ) ) {
+			opt = opt;
+		}
 
-    if (isNumber(opt)) {
-      opt = opt > 360 ? opt % 360 : opt;
+		if ( isNumber( opt ) ) {
+			opt = opt > 360 ? opt % 360 : opt;
 
-      opt = `${opt}deg`;
-    }
+			opt = `${ opt }deg`;
+		}
 
 
-    var result = `${this.json.type}(${opt}, ${colorString})`;
+		var result = `${ this.json.type }(${ opt }, ${ colorString })`;
 
-    return result;
-  }
+		return result;
+	}
 
-  static toLinearGradient(colorsteps) {
-    if (colorsteps.length === 0) {
-      return "none";
-    }
+	static toLinearGradient( colorsteps ) {
+		if ( colorsteps.length === 0 ) {
+			return "none";
+		}
 
-    var gradient = new LinearGradient({
-      angle: "to right",
-      colorsteps
-    });
+		var gradient = new LinearGradient( {
+			angle: "to right",
+			colorsteps
+		} );
 
-    return gradient + "";
-  }
+		return gradient + "";
+	}
 
-  static parse(str) {
-    var results = Color.convertMatches(str);
-    var angle = 0;
-    var colorsteps = [];
-    results.str
-      .split("(")[1]
-      .split(")")[0]
-      .split(",")
-      .map(it => it.trim())
-      .forEach((newValue, index) => {
-        if (newValue.includes("@")) {
-          // color 복원
-          newValue = Color.reverseMatches(newValue, results.matches);
+	static parse( str ) {
+		var results = Color.convertMatches( str );
+		var angle = 0;
+		var colorsteps = [];
+		results.str
+			.split( "(" )[ 1 ]
+			.split( ")" )[ 0 ]
+			.split( "," )
+			.map( it => it.trim() )
+			.forEach( ( newValue, index ) => {
+				if ( newValue.includes( "@" ) ) {
+					// color 복원
+					newValue = Color.reverseMatches( newValue, results.matches );
 
-          // 나머지는 ColorStep 이 파싱하는걸로
-          // ColorStep 은 파싱이후 colorsteps 를 리턴해줌... 배열임, 명심 명심
-          colorsteps.push(...ColorStep.parse(newValue));
-        } else {
-          // direction
-          angle = isUndefined(DEFINED_ANGLES[newValue])
-            ? Length.parse(newValue)
-            : Length.deg(+DEFINED_ANGLES[newValue]);
-        }
-      });
+					// 나머지는 ColorStep 이 파싱하는걸로
+					// ColorStep 은 파싱이후 colorsteps 를 리턴해줌... 배열임, 명심 명심
+					colorsteps.push( ...ColorStep.parse( newValue ) );
+				} else {
+					// direction
+					angle = isUndefined( DEFINED_ANGLES[ newValue ] )
+						? Length.parse( newValue )
+						: Length.deg( +DEFINED_ANGLES[ newValue ] );
+				}
+			} );
 
-    return new LinearGradient({ angle, colorsteps });
-  }
+		return new LinearGradient( { angle, colorsteps } );
+	}
 }
- 

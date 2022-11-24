@@ -1,6 +1,6 @@
 .el-colorpicker {
   // color
-  --color-bg: var(--cp-color-bg, #fff);
+  --color-bg: var(--cp-color-bg);
   --color-fill: var(--cp-color-fill, #222);
   --color-key: var(--cp-color-key, #30A2FF);
   --color-blur: var(--cp-color-blur, #888);
@@ -49,22 +49,8 @@
   -webkit-user-select : none;
   color: var(--color-fill);
 
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    box-shadow: var(--shadow-outer);
-    pointer-events: none;
-    border-radius: var(--size-radius);
-  }
-
   &, button, input {
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    line-height: 1.25;
+    line-height: 1;
   }
 }
 

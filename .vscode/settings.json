@@ -1,0 +1,11 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.formatOnSave": true,
+	"javascript.preferences.quoteStyle": "single",
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": true
+}
