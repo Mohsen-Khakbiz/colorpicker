@@ -20,10 +20,15 @@
 				appearance: checkbox;
 			}
 		}
+
+		>div:first-child {
+			flex-grow: 1;
+		}
 	}
 
 	[data-editor] {
 		display: none;
+		align-items: center;
 
 		>label {
 			font-size: 11px;
@@ -81,7 +86,7 @@
 		padding: 0px 8px;
 
 		>div {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1fr 4fr;
 		}
 
 	}

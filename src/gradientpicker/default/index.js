@@ -130,23 +130,23 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		}
 		return /*html*/ `
       <div class="el-gradientpicker--default gradient-picker">
-        <div class='box'>
-          <div class="picker-tab">
-            <select class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false" style="${ selectStyle }">
-              ${ options
+		<div class="picker-tab" style="${ selectStyle }">
+		<select class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false">
+			${ options
 				.map( ( it ) => {
 					return `
-                  <option value='${ it.type }' title='${ it.title }' > 
-                  ${ it.title }
-                  </option>`;
+				<option value='${ it.type }' title='${ it.title }' > 
+				${ it.title }
+				</option>`;
 				} )
 				.join( '' ) }
-            </select>
-            <span></span>
-          </div>
-          <template target='GradientEditor'></template>
-          <template target="EmbedColorPicker"></template>
-        </div>
+		</select>
+		<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<polyline points="6 9 12 15 18 9"></polyline>
+		</svg>
+		</div>
+		<template target='GradientEditor'></template>
+		<template target="EmbedColorPicker"></template>
       </div>
     `;
 	}
