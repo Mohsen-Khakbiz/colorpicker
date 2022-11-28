@@ -118,12 +118,22 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 	}
 
 	template() {
+		let options = this.opt.types || 'all';
+		let selectStyle = '';
+		if ( typeof options === 'object' ) {
+			options = tabs.filter( tab => options.find( opt => opt === tab.type ) )
+			if ( options.length === 1 ) {
+				selectStyle += 'display: none;';
+			}
+		} else if ( options === 'all' ) {
+			options = tabs;
+		}
 		return /*html*/ `
       <div class="el-gradientpicker--default gradient-picker">
         <div class='box'>
           <div class="picker-tab">
-            <select class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false">
-              ${ tabs
+            <select class="picker-tab-list" ref="$tab" data-value="static-gradient" data-is-image-hidden="false" style="${ selectStyle }">
+              ${ options
 				.map( ( it ) => {
 					return `
                   <option value='${ it.type }' title='${ it.title }' > 

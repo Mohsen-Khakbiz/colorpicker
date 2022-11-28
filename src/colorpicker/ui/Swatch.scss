@@ -21,10 +21,9 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	display: grid;
-	place-items: start;
-	grid-template-columns: repeat(var(--swatch-column, 5), 1fr);
-	gap: var(--swatch-gap, 10px);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--swatch-gap, 7px);
 
 	>li {
 		button {

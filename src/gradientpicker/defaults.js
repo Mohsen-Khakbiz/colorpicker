@@ -2,6 +2,7 @@ export default {
 	// values
 	container: undefined,
 	type: "default",
+	types: 'all',
 	// gradient: 'linear-gradient(0deg, white 0%, black 100%)',
 	// colorpicker: {
 	// 	color: "#FFFFFF",
