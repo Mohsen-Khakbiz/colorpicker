@@ -105,7 +105,6 @@
 		top: 4px;
 		height: 20px;
 		border-radius: 15px;
-		box-sizing: border-box;
 		@include mixins.transparent-background();
 		pointer-events: all;
 	}
@@ -126,7 +125,6 @@
 				pointer-events: all;
 				width: 15px;
 				height: 15px;
-				box-sizing: border-box;
 				display: inline-block;
 				position: absolute;
 				top: 50%;

@@ -3,7 +3,6 @@
 	width: var(--palette-width, 100%);
 	height: var(--palette-height, 150px);
 	cursor: default;
-	box-sizing: border-box;
 	background-color: var(--palette-bg, #eee);
 	margin-top: 10px;
 
@@ -46,7 +45,6 @@
 		transform: translate(-50%, -50%);
 		border: var(--size-pointer-stroke) solid var(--color-pointer-fill);
 		box-shadow: var(--shadow-pointer);
-		box-sizing: border-box;
 		cursor: move;
 	}
 }

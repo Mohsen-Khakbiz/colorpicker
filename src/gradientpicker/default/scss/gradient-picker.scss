@@ -1,7 +1,6 @@
 @use "../../../scss/mixins";
 
 .gradient-picker {
-	box-sizing: border-box;
 	--size-radius: 15px;
 
 	.el-colorpicker {

@@ -50,7 +50,6 @@
 		padding: 0;
 		border: none;
 		outline: none;
-		box-sizing: border-box;
 		text-align: center;
 		border-radius: 2px;
 		font-size: 12px;
@@ -78,13 +77,14 @@
 }
 
 .el-cp-color-nav {
-	margin-left: var(--size-inner-padding);
+	display: flex;
+	align-items: center;
+	margin-left: 5px;
 
 	&__label {
 		position: relative;
 		display: block;
-		box-sizing: border-box;
-		width: 36px;
+		width: 30px;
 		height: 24px;
 		margin: 0;
 		padding: 0;
@@ -94,7 +94,7 @@
 		border-radius: 2px;
 		background: none;
 		-webkit-tap-highlight-color: transparent;
-		transition: box-shadow var(--speed-focus) ease-out;
+		transition: box-shadow var(--speed-focus) ease-out, background 0.3s;
 
 		select {
 			display: block;
@@ -104,7 +104,6 @@
 			top: 0;
 			width: 100%;
 			height: 100%;
-			box-sizing: border-box;
 			opacity: 0;
 			outline: none;
 			cursor: pointer;
@@ -128,6 +127,39 @@
 		&:active {
 			svg {
 				transform: rotateZ(90deg);
+			}
+		}
+
+		&:hover {
+			background-color: rgb(0 0 0 / 15%);
+		}
+	}
+
+	button {
+		width: 30px;
+		height: 24px;
+		border: none;
+		background: none;
+		border-radius: 3px;
+		cursor: pointer;
+		overflow: hidden;
+		transition: background 0.3s;
+
+		svg {
+			transition: transform 0.65s;
+		}
+
+		&:hover {
+			background-color: rgb(0 0 0 / 15%);
+		}
+	}
+
+	.el-cp-clear {
+
+		&:hover {
+
+			svg {
+				transform: rotate(-360deg);
 			}
 		}
 	}

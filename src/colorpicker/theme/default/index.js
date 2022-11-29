@@ -7,17 +7,17 @@ import './index.scss';
 
 export default class DefaultColorPicker extends BaseColorPicker {
 
-  components() {
-    return {
-      Palette,
-      Control,
-      Forms,
-      Swatch,
-    };
-  }
+	components() {
+		return {
+			Palette,
+			Control,
+			Forms,
+			Swatch,
+		};
+	}
 
-  template() {
-    return `
+	template() {
+		return `
       <div class="el-colorpicker__wrap">
         <template target="Palette"></template>
         <template target="Control"></template>
@@ -25,6 +25,6 @@ export default class DefaultColorPicker extends BaseColorPicker {
         <template target="Swatch"></template>
       </div>
     `;
-  }
+	}
 
 }
