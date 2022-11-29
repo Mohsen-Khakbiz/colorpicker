@@ -5,9 +5,9 @@ export default class ColorManager extends BaseModule {
 
 	initialize() {
 		super.initialize();
-		this.$store.rgb = {};
-		this.$store.hsl = {};
-		this.$store.hsv = {};
+		this.$store.rgb = { r: 255, g: 255, b: 255 };
+		this.$store.hsl = { h: 0, s: 0, l: 100 };
+		this.$store.hsv = { h: 0, s: 0, v: 1 };
 		this.$store.alpha = 1;
 		this.$store.format = 'hex';
 	}
@@ -64,9 +64,9 @@ export default class ColorManager extends BaseModule {
 			$store.prevhsl = $store.hsl;
 			$store.prevformat = $store.format;
 
-			$store.hsv = {};
 			$store.rgb = {};
 			$store.hsl = {};
+			$store.hsv = {};
 			$store.format = '';
 
 		}

@@ -92,7 +92,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		this.$root.el.classList = '';
 		this.$root.el.classList.add( 'el-gradientpicker' );
 
-		this.setGradient( this.opt.gradient || this.opt.colorpicker?.color || '#fff' );
+		this.setGradient( this.opt.gradient || this.opt.colorpicker?.color );
 	}
 
 	setGradient( gradientString ) {

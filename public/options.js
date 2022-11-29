@@ -2,7 +2,7 @@ let custom = {};
 
 const basicOpts = {
 	type: "default", // default,circle,ring,mini,none
-	color: "#44D7B6",
+	color: "",
 	format: "hex", // hex,rgb,hsl
 	// outputFormat: 'rgb',
 	// paletteWidth: 200,

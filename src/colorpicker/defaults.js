@@ -2,7 +2,7 @@ export default {
 	// values
 	container: undefined,
 	type: null, // default,circle,ring,mini,none
-	color: '#ffffff',
+	color: '',
 	format: 'hex', // hex,rgb,hsl
 	outputFormat: undefined, // hex,rgb,hsl
 	useInformation: true,
