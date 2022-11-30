@@ -23,6 +23,10 @@
 
 		>div:first-child {
 			flex-grow: 1;
+
+			+div {
+				flex: 0 0 48px;
+			}
 		}
 	}
 
