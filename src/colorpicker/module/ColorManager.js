@@ -26,47 +26,49 @@ export default class ColorManager extends BaseModule {
 
 		if ( typeof colorObj === 'string' ) colorObj = Color.parse( colorObj );
 
-		$store.alpha = colorObj?.a || $store.alpha;
+		$store.alpha = colorObj?.a >= 0 ? colorObj.a : $store.alpha;
 
 		if ( !$store.format ) {
 			$store.format = colorObj?.type !== 'hsv' ? ( colorObj?.type || 'hex' ) : 'hex';
 		}
 
-		if ( colorObj?.type || colorObj?.a ) {
+		if ( colorObj?.type || colorObj?.a >= 0 ) {
 
 			switch ( colorObj.type ) {
 				case 'hsl':
-					$store.hsl = Object.assign( $store.prevhsl || $store.hsl, colorObj );
-					$store.rgb = Color.HSLtoRGB( $store.prevhsl || $store.hsl );
+					$store.hsl = Object.assign( $store.lasthsl || $store.hsl, colorObj );
+					$store.rgb = Color.HSLtoRGB( $store.lasthsl || $store.hsl );
 					$store.hsv = Color.HSLtoHSV( colorObj );
 					break;
 				case 'hex':
-					$store.rgb = Object.assign( $store.prevrgb || $store.rgb, colorObj );
-					$store.hsl = Color.RGBtoHSL( $store.prevrgb || $store.rgb );
+					$store.rgb = Object.assign( $store.lastrgb || $store.rgb, colorObj );
+					$store.hsl = Color.RGBtoHSL( $store.lastrgb || $store.rgb );
 					$store.hsv = Color.RGBtoHSV( colorObj );
 					break;
 				case 'rgb':
-					$store.rgb = Object.assign( $store.prevrgb || $store.rgb, colorObj );
-					$store.hsl = Color.RGBtoHSL( $store.prevrgb || $store.rgb );
+					$store.rgb = Object.assign( $store.lastrgb || $store.rgb, colorObj );
+					$store.hsl = Color.RGBtoHSL( $store.lastrgb || $store.rgb );
 					$store.hsv = Color.RGBtoHSV( colorObj );
 					break;
 				case 'hsv':
-					$store.hsv = Object.assign( $store.prevhsv || $store.hsv, colorObj );
-					$store.rgb = Color.HSVtoRGB( $store.prevhsv || $store.hsv );
-					$store.hsl = Color.HSVtoHSL( $store.prevhsv || $store.hsv );
+					$store.hsv = Object.assign( $store.lasthsv || $store.hsv, colorObj );
+					$store.rgb = Color.HSVtoRGB( $store.lasthsv || $store.hsv );
+					$store.hsl = Color.HSVtoHSL( $store.lasthsv || $store.hsv );
 					break;
 			}
 
 		} else {
 
-			$store.prevhsv = $store.hsv;
-			$store.prevrgb = $store.rgb;
-			$store.prevhsl = $store.hsl;
-			$store.prevformat = $store.format;
+			$store.lasthsv = $store.hsv;
+			$store.lastrgb = $store.rgb;
+			$store.lasthsl = $store.hsl;
+			$store.lastformat = $store.format;
+
 
 			$store.rgb = {};
 			$store.hsl = { h: 0, s: 0, l: 100 };
 			$store.hsv = { h: 0, s: 0, v: 1 };
+			$store.alpha = 1;
 			$store.format = 'hex';
 
 		}
