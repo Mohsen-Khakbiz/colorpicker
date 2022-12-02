@@ -65,9 +65,9 @@ export default class ColorManager extends BaseModule {
 			$store.prevformat = $store.format;
 
 			$store.rgb = {};
-			$store.hsl = {};
-			$store.hsv = {};
-			$store.format = '';
+			$store.hsl = { h: 0, s: 0, l: 100 };
+			$store.hsv = { h: 0, s: 0, v: 1 };
+			$store.format = 'hex';
 
 		}
 

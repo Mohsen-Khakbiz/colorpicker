@@ -344,9 +344,8 @@ export default class GradientEditor extends UIElement {
 		this.$currentStep = this.refs.$stepList.$(
 			`[data-index="${ index.toString() }"]`
 		);
-		if ( this.$currentStep ) {
-			this.$colorView = this.$currentStep.$( '.color-view' );
-		}
+		if ( !this.$currentStep || !this.$currentStep.el ) return;
+		this.$colorView = this.$currentStep.$( '.color-view' );
 		this.prev = this.colorsteps[ index - 1 ];
 		this.next = this.colorsteps[ index + 1 ];
 
