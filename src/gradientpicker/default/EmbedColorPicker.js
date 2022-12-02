@@ -13,6 +13,9 @@ export default class EmbedColorPicker extends UIElement {
 			onChange: c => {
 				this.changeColor( c );
 			},
+			onClear: () => {
+				this.clearColor();
+			}
 		} );
 	}
 
@@ -22,6 +25,10 @@ export default class EmbedColorPicker extends UIElement {
 
 	changeColor( color ) {
 		this.$store.emit( 'changeEmbedColorPicker', color );
+	}
+
+	clearColor() {
+		this.$store.emit( 'clearEmbedColorPicker' );
 	}
 
 	setColor( color ) {

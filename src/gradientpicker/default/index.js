@@ -286,6 +286,10 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		this.$store.emit( 'setColorStepColor', color );
 	}
 
+	'@clearEmbedColorPicker'() {
+		this.$store.emit( 'clearColorSteps' );
+	}
+
 	'@selectColorStep'( color ) {
 		this.EmbedColorPicker.setColor( color );
 	}

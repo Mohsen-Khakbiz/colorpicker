@@ -295,7 +295,7 @@ export default class GradientEditor extends UIElement {
 				offset: Length.percent( 0 ),
 				color: 'rgba(0, 0, 0, 1)',
 			} );
-			ind = this.colorsteps[ this.colorsteps.length - 1 ];
+			ind = this.colorsteps.length - 1;
 		}
 
 		this.refresh();
@@ -308,7 +308,7 @@ export default class GradientEditor extends UIElement {
 		this.refs.$stepList.html(
 			this.colorsteps
 				.map( ( it, index ) => {
-					return `<div class='step ${ this.colorsteps.length === 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
+					return `<div class='step ${ this.colorsteps.length <= 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
 						<div class='color-view' style="background-color: ${ it.color }"></div>
 						<button type="button" class="remove-step" title="Remove color stop">&times;</button>
 					</div>`;
@@ -322,7 +322,6 @@ export default class GradientEditor extends UIElement {
 	}
 
 	removeStep( index ) {
-		if ( this.colorsteps.length === 2 ) return;
 		this.colorsteps.splice( index, 1 );
 		var currentStep = this.colorsteps[ index ];
 		var currentIndex = index;
@@ -475,6 +474,24 @@ export default class GradientEditor extends UIElement {
 		this.refs.$centerYSelect.val( radialPosition[ 1 ].unit );
 
 		this.refs.$radialType.val( this.radialType );
+	}
+
+	'@setColorStepColor'( color ) {
+		if ( this.currentStep ) {
+			this.currentStep.color = color;
+			this.$colorView.css( {
+				'background-color': color,
+			} );
+			this.setColorUI();
+			this.updateData();
+		}
+	}
+
+	'@clearColorSteps'() {
+		if ( this.type === 'solid' ) return;
+		this.colorsteps = [];
+		this.refresh();
+		this.updateData();
 	}
 
 	'@setColorStepColor'( color ) {

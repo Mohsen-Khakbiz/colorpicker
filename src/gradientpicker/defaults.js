@@ -21,5 +21,5 @@ export default {
 	onDestroy: undefined,
 	onChange: undefined,
 	onChanged: undefined,
-	onChangeFormat: undefined,
+	onChangeFormat: undefined
 };
