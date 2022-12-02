@@ -74,6 +74,7 @@ export default class ColorManager extends BaseModule {
 		}
 
 		if ( !isInit ) $store.emit( 'changeColor', colorObj );
+
 	}
 
 	[ '/clear' ]( $store ) {

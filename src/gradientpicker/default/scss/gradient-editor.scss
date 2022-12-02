@@ -1,6 +1,7 @@
 @use "../../../scss/mixins";
 
 .gradient-editor {
+	margin-bottom: 5px;
 	position: relative;
 	-webkit-user-select: none;
 	user-select: none;
@@ -97,7 +98,6 @@
 
 	.gradient-steps {
 		position: relative;
-		margin-top: 20px;
 		height: 30px;
 	}
 
