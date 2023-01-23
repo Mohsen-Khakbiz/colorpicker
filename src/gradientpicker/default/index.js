@@ -250,6 +250,11 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
 		this[ '@selectColorStep' ]( color );
 
+		if ( color.startsWith( '--' ) ) {
+			this.opt.container.querySelectorAll( `button[data-color]` )?.forEach( button => button.classList.remove( 'is-selected' ) );
+			this.opt.container.querySelector( `[data-color=${ color }]` )?.classList?.add( 'is-selected' );
+		}
+
 		this.updateData();
 
 	}
@@ -312,6 +317,10 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 	}
 
 	'@selectColorStep'( color ) {
+		if ( color.startsWith( '--' ) ) {
+			this.opt.container.querySelectorAll( `button[data-color]` )?.forEach( button => button.classList.remove( 'is-selected' ) );
+			this.opt.container.querySelector( `[data-color=${ color }]` )?.classList?.add( 'is-selected' );
+		}
 		this.EmbedColorPicker.setColor( color );
 	}
 

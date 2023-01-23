@@ -137,6 +137,9 @@ export class ConicGradient extends Gradient {
 					// 나머지는 ColorStep 이 파싱하는걸로
 					// ColorStep 은 파싱이후 colorsteps 를 리턴해줌... 배열임, 명심 명심
 					colorsteps.push( ...ColorStep.parse( newValue ) );
+				} else if ( newValue.startsWith( 'var(' ) ) {
+					// css var
+					colorsteps.push( ...ColorStep.parse( newValue ) );
 				} else {
 					// direction
 					if ( newValue.includes( "at" ) ) {
