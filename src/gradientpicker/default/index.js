@@ -185,7 +185,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 			this.image.colorsteps[ this.selectedColorStepIndex || 0 ] ||
 			{ color: 'rgba(0, 0, 0, 1)', };
 		if ( colorstep.color.startsWith( 'var(' ) ) {
-			colorstep.color = colorstep.color.replace( 'var(', '' ).replace( ')', '' );
+			colorstep.color = colorstep.color.replace( 'var(', '' ).replace( ')', '' ).trim();
 		}
 		return colorstep.color;
 	}

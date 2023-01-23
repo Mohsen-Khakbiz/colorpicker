@@ -247,6 +247,8 @@ export default class GradientEditor extends UIElement {
 	'click $back'( e ) {
 		if ( this.startXY ) return;
 
+		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
+
 		var rect = this.refs.$stepList.rect();
 
 		var minX = rect.x;
@@ -266,6 +268,13 @@ export default class GradientEditor extends UIElement {
 		var prev = list.filter( it => it.offset.value <= percent ).pop();
 		var next = list.filter( it => it.offset.value >= percent ).shift();
 		var ind;
+
+		if ( prev && prev.color.startsWith( 'var(' ) ) {
+			prev.color = getComputedStyle( getColorFrom ).getPropertyValue( prev.color.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+		}
+		if ( next && next.color.startsWith( 'var(' ) ) {
+			next.color = getComputedStyle( getColorFrom ).getPropertyValue( next.color.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+		}
 
 		if ( prev && next ) {
 			ind = next.index;
@@ -362,8 +371,14 @@ export default class GradientEditor extends UIElement {
 			this.removeStep( index );
 		} else {
 			this.selectStep( index );
+			let currentStepColor = this.currentStep.color;
+
+			if ( currentStepColor.startsWith( 'var(' ) ) {
+				currentStepColor = currentStepColor.replace( 'var(', '' ).replace( ')', '' );
+			}
+
 			this.startXY = e.xy;
-			this.$store.emit( 'selectColorStep', this.currentStep.color );
+			this.$store.emit( 'selectColorStep', currentStepColor );
 			this.refs.$stepList.attr( 'data-selected-index', index );
 			this.cachedStepListRect = this.refs.$stepList.rect();
 		}
