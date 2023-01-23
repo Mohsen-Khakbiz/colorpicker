@@ -29,6 +29,7 @@ export default class Swatch extends UIElement {
 
 	[ 'load $index' ]() {
 		const colors = this.$store.dispatch( '/swatch.index' );
+		const getCssVarFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		return `
       <ul class="el-cp-colors">
         ${ colors.map( color => {
@@ -39,7 +40,7 @@ export default class Swatch extends UIElement {
 				type="button"
 				data-color="${ color }"
 				class="el-cp-colors__item"
-				style="--color: ${ isCssVar ? `var(${ color })` : color }">
+				style="--color: ${ isCssVar ? getComputedStyle( getCssVarFrom ).getPropertyValue( color ) : color }">
 				${ color }
 				</button>
 			</li>
