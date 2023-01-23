@@ -84,6 +84,7 @@ export default class Palette extends UIElement {
 		this.x = e.pageX;
 		this.y = e.pageY;
 		this.setMainColor( e );
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 
 	[ 'touchend document' ]() {
@@ -100,6 +101,7 @@ export default class Palette extends UIElement {
 		this.isDown = true;
 		this.cacheSize();
 		this.setMainColor( e );
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 
 	contextmenu() {

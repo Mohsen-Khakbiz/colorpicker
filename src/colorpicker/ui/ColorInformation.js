@@ -123,6 +123,7 @@ export default class ColorInformation extends UIElement {
 			a: this.refs.$rgb_a.float(),
 		} )
 		this.$store.emit( 'lastUpdateColor' );
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 	changeHslColor() {
 		this.$store.dispatch( '/changeColor', {
@@ -133,6 +134,7 @@ export default class ColorInformation extends UIElement {
 			a: this.refs.$hsl_a.float(),
 		} );
 		this.$store.emit( 'lastUpdateColor' );
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 
 	[ '@changeColor' ]() {
@@ -152,10 +154,14 @@ export default class ColorInformation extends UIElement {
 	[ 'input $hsl_a' ]() { this.changeHslColor(); }
 	[ 'keyup $hexCode' ]() {
 		const code = this.refs.$hexCode.val();
-		if ( code.charAt( 0 ) === '#' && ( code.length === 7 || code.length === 9 ) ) {
+		if (
+			code.startsWith( '--' ) ||
+			( code.charAt( 0 ) === '#' && ( code.length === 7 || code.length === 9 ) )
+		) {
 			this.$store.dispatch( '/changeColor', code );
 			this.$store.emit( 'lastUpdateColor' );
 		}
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 
 	[ 'change $changeColorModel' ]( e ) {
@@ -176,6 +182,7 @@ export default class ColorInformation extends UIElement {
 
 	[ 'click $clear' ]() {
 		this.$store.dispatch( '/clear' );
+		this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 	}
 
 	setRGBInput() {

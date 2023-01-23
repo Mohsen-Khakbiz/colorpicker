@@ -23,6 +23,7 @@ export default class Eyedropper extends UIElement {
 
 			this.$store.dispatch( '/changeColor', result.sRGBHex );
 			this.$store.emit( 'lastUpdateColor' );
+			this.opt.container.querySelector( '.el-cp-colors__item.is-selected' )?.classList?.remove( 'is-selected' );
 		}
 	}
 

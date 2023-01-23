@@ -3,24 +3,24 @@ import './ColorPreview.scss';
 
 export default class ColorPreview extends UIElement {
 
-  template() {
-    return `
+	template() {
+		return `
       <i class="el-cp-color-preview">
         <em ref="$color"></em>
       </i>
     `;
-  }
+	}
 
-  refresh() {
-    this.refs.$color.css('background-color', this.$store.dispatch('/toRGB'));
-  }
+	refresh() {
+		this.refs.$color.css( 'background-color', this.$store.dispatch( '/toRGB' ) );
+	}
 
-  ['@changeColor']() {
-    this.refresh();
-  }
+	[ '@changeColor' ]() {
+		this.refresh();
+	}
 
-  ['@initColor']() {
-    this.refresh();
-  }
+	[ '@initColor' ]() {
+		this.refresh();
+	}
 
 }

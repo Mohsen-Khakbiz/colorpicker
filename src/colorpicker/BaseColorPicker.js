@@ -24,11 +24,13 @@ export default class BaseColorPicker extends UIElement {
 		// set store events
 		this.$store.on( 'changeColor', () => {
 			if ( !( this.opt.onChange && typeof this.opt.onChange === 'function' ) ) return;
-			this.opt.onChange( this.getColor() );
+			const color = this.$store.colorCssVar ? `var(${ this.$store.colorCssVar })` : this.getColor();
+			this.opt.onChange( color );
 		} );
 		this.$store.on( 'lastUpdateColor', () => {
 			if ( !( this.opt.onChanged && typeof this.opt.onChanged === 'function' ) ) return;
-			this.opt.onChanged( this.getColor() );
+			const color = this.$store.colorCssVar ? `var(${ this.$store.colorCssVar })` : this.getColor();
+			this.opt.onChanged( color );
 		} );
 		this.$store.on( 'changeFormat', () => {
 			if ( !( this.opt.onChangeFormat && typeof this.opt.onChangeFormat === 'function' ) ) return;

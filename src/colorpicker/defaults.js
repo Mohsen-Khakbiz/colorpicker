@@ -12,6 +12,10 @@ export default {
 	paletteThickness: 16,
 	swatchTitle: 'Color palette',
 	swatchColors: [],
+	/**
+	 * @type {HTMLElement}
+	 */
+	getCssVarFrom: document.documentElement,
 
 	// callback functions
 	onInit: undefined,

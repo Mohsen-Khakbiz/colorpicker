@@ -73,5 +73,9 @@
 		&:disabled {
 			box-shadow: 0 0 0 2px var(--color-key);
 		}
+		&.is-selected {
+			outline: 2px solid;
+			box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
+		}
 	}
 }

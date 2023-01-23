@@ -22,9 +22,22 @@ export default class ColorManager extends BaseModule {
 		$store.emit( 'initColor' );
 	}
 
-	[ '/changeColor' ]( $store, colorObj, isInit ) {
+	[ '/changeColor' ]( $store, colorObj, isInit, getCssVarFrom ) {
 
-		if ( typeof colorObj === 'string' ) colorObj = Color.parse( colorObj );
+		let isCssVar = false;
+		let colorCssVar = '';
+
+		if ( typeof colorObj === 'string' && colorObj !== '' ) {
+			// if color is a css var
+			if ( colorObj.startsWith( '--' ) ) {
+				colorCssVar = colorObj;
+				const getColorFrom = getCssVarFrom ? getCssVarFrom : document.documentElement;
+				const color = getComputedStyle( getColorFrom ).getPropertyValue( colorObj );
+				colorObj = color;
+				isCssVar = true;
+			}
+			colorObj = Color.parse( colorObj.trim() )
+		};
 
 		$store.alpha = colorObj?.a >= 0 ? colorObj.a : $store.alpha;
 
@@ -57,7 +70,7 @@ export default class ColorManager extends BaseModule {
 					break;
 			}
 
-		} else {
+		} else { // clear
 
 			$store.lasthsv = $store.hsv;
 			$store.lastrgb = $store.rgb;
@@ -71,6 +84,12 @@ export default class ColorManager extends BaseModule {
 			$store.alpha = 1;
 			$store.format = 'hex';
 
+		}
+
+		if ( isCssVar ) {
+			$store.colorCssVar = colorCssVar;
+		} else {
+			$store.colorCssVar = null;
 		}
 
 		if ( !isInit ) $store.emit( 'changeColor', colorObj );

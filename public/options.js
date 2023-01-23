@@ -2,14 +2,14 @@ let custom = {};
 
 const basicOpts = {
 	type: "default", // default,circle,ring,mini,none
-	color: "",
+	color: "--e-global-color-primary",
 	format: "hex", // hex,rgb,hsl
 	// outputFormat: 'rgb',
 	// paletteWidth: 200,
 	// paletteHeight: 200,
 	// paletteThickness: undefined,
 	swatchTitle: undefined,
-	swatchColors: [ "#ff0000", "#00ff00", "#0000ff" ],
+	swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
 	onInit: ( self ) => {
 		custom = {
 			$color: document.querySelector( "#colorSample > i" ),
@@ -37,8 +37,8 @@ const basicOpts = {
 const gradientOpts = {
 	// gradient: "linear-gradient(to right, red 0%, green 100%)",
 	colorpicker: {
-		color: '#BE08FE',
-		swatchColors: [ "#ff0000", "#00ff00", "#0000ff" ],
+		color: '--e-global-color-secondary',
+		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
 	},
 	onInit: ( self ) => {
 		custom = {
