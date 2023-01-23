@@ -23,7 +23,7 @@ const tabs = [
 	{ type: 'conic-gradient', title: 'Conic Gradient' },
 	{ type: 'repeating-conic-gradient', title: 'Repeating Conic Gradient' },
 ];
-const reg = /((linear\-gradient|repeating\-linear\-gradient|radial\-gradient|repeating\-radial\-gradient|conic\-gradient|repeating\-conic\-gradient|url)\(([^\)]*)\))/gi;
+const reg = /((linear\-gradient|repeating\-linear\-gradient|radial\-gradient|repeating\-radial\-gradient|conic\-gradient|repeating\-conic\-gradient)\(([^\)]*)\))/gi;
 
 export default class DefaultGradientPicker extends BaseColorPicker {
 
@@ -39,26 +39,44 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		var results = Color.convertMatches( str );
 		let image = null;
 
-		if ( results.matches?.length <= 1 ) {
+		if ( str.search( reg ) < 0 ) {
 			return Solid.parse( str );
 		}
 
-		results.str.match( reg ).forEach( value => {
-			value = Color.reverseMatches( value, results.matches );
-			if ( value.includes( 'repeating-linear-gradient' ) ) {
-				image = RepeatingLinearGradient.parse( value );
-			} else if ( value.includes( 'linear-gradient' ) ) {
-				image = LinearGradient.parse( value );
-			} else if ( value.includes( 'repeating-radial-gradient' ) ) {
-				image = RepeatingRadialGradient.parse( value );
-			} else if ( value.includes( 'radial' ) ) {
-				image = RadialGradient.parse( value );
-			} else if ( value.includes( 'repeating-conic-gradient' ) ) {
-				image = RepeatingConicGradient.parse( value );
-			} else if ( value.includes( 'conic' ) ) {
-				image = ConicGradient.parse( value );
-			}
-		} );
+		if ( str.includes( 'repeating-linear-gradient' ) ) {
+			image = RepeatingLinearGradient.parse( str );
+		} else if ( str.includes( 'linear-gradient' ) ) {
+			image = LinearGradient.parse( str );
+		} else if ( str.includes( 'repeating-radial-gradient' ) ) {
+			image = RepeatingRadialGradient.parse( str );
+		} else if ( str.includes( 'radial' ) ) {
+			image = RadialGradient.parse( str );
+		} else if ( str.includes( 'repeating-conic-gradient' ) ) {
+			image = RepeatingConicGradient.parse( str );
+		} else if ( str.includes( 'conic' ) ) {
+			image = ConicGradient.parse( str );
+		}
+
+		// if ( results.matches?.length <= 1 && str.search( reg ) < 0 ) {
+		// 	return Solid.parse( str );
+		// }
+
+		// results.str.match( reg ).forEach( value => {
+		// 	value = Color.reverseMatches( value, results.matches );
+		// 	if ( value.includes( 'repeating-linear-gradient' ) ) {
+		// 		image = RepeatingLinearGradient.parse( value );
+		// 	} else if ( value.includes( 'linear-gradient' ) ) {
+		// 		image = LinearGradient.parse( value );
+		// 	} else if ( value.includes( 'repeating-radial-gradient' ) ) {
+		// 		image = RepeatingRadialGradient.parse( value );
+		// 	} else if ( value.includes( 'radial' ) ) {
+		// 		image = RadialGradient.parse( value );
+		// 	} else if ( value.includes( 'repeating-conic-gradient' ) ) {
+		// 		image = RepeatingConicGradient.parse( value );
+		// 	} else if ( value.includes( 'conic' ) ) {
+		// 		image = ConicGradient.parse( value );
+		// 	}
+		// } );
 
 		return image;
 
@@ -166,6 +184,9 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		var colorstep =
 			this.image.colorsteps[ this.selectedColorStepIndex || 0 ] ||
 			{ color: 'rgba(0, 0, 0, 1)', };
+		if ( colorstep.color.startsWith( 'var(' ) ) {
+			colorstep.color = colorstep.color.replace( 'var(', '' ).replace( ')', '' );
+		}
 		return colorstep.color;
 	}
 

@@ -364,7 +364,6 @@ export default class GradientEditor extends UIElement {
 			this.selectStep( index );
 			this.startXY = e.xy;
 			this.$store.emit( 'selectColorStep', this.currentStep.color );
-			// this.refs.$offset.val(this.currentStep.offset.value);
 			this.refs.$stepList.attr( 'data-selected-index', index );
 			this.cachedStepListRect = this.refs.$stepList.rect();
 		}
@@ -449,7 +448,6 @@ export default class GradientEditor extends UIElement {
 	}
 
 	reloadInputValue() {
-
 		if ( this.type === 'solid' ) return;
 
 		let angle = this.angle.value != null ? this.angle.value : this.angle;
@@ -473,17 +471,6 @@ export default class GradientEditor extends UIElement {
 		this.refs.$centerYSelect.val( radialPosition[ 1 ].unit );
 
 		this.refs.$radialType.val( this.radialType );
-	}
-
-	'@setColorStepColor'( color ) {
-		if ( this.currentStep ) {
-			this.currentStep.color = color;
-			this.$colorView.css( {
-				'background-color': color,
-			} );
-			this.setColorUI();
-			this.updateData();
-		}
 	}
 
 	'@clearColorSteps'() {

@@ -2,7 +2,7 @@ let custom = {};
 
 const basicOpts = {
 	type: "default", // default,circle,ring,mini,none
-	color: "--e-global-color-secondary",
+	color: "--e-global-color-primary",
 	format: "hex", // hex,rgb,hsl
 	// outputFormat: 'rgb',
 	// paletteWidth: 200,
@@ -35,9 +35,9 @@ const basicOpts = {
 };
 
 const gradientOpts = {
-	// gradient: "linear-gradient(to right, red 0%, green 100%)",
+	gradient: "linear-gradient(to right, rgba(255,255,0,0.5) 0%, #ef2569 35%, green 69%, var(--e-global-color-primary) 100%)",
 	colorpicker: {
-		color: '--e-global-color-secondary',
+		// color: '',
 		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
 	},
 	onInit: ( self ) => {

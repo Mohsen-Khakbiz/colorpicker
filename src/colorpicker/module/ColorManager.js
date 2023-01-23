@@ -22,7 +22,7 @@ export default class ColorManager extends BaseModule {
 		$store.emit( 'initColor' );
 	}
 
-	[ '/changeColor' ]( $store, colorObj, isInit, getCssVarFrom ) {
+	[ '/changeColor' ]( $store, colorObj, isInit ) {
 
 		let isCssVar = false;
 		let colorCssVar = '';
@@ -31,7 +31,7 @@ export default class ColorManager extends BaseModule {
 			// if color is a css var
 			if ( colorObj.startsWith( '--' ) ) {
 				colorCssVar = colorObj;
-				const getColorFrom = getCssVarFrom ? getCssVarFrom : document.documentElement;
+				const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 				const color = getComputedStyle( getColorFrom ).getPropertyValue( colorObj );
 				colorObj = color;
 				isCssVar = true;

@@ -47,6 +47,8 @@ function ColorPicker( options ) {
 
 	switchType( options.type );
 
+	window.lqdColorPickerGetCssVarsFrom = this.opt.getCssVarFrom || document.documentElement;
+
 	/**
 	 * set type
 	 *
@@ -70,10 +72,18 @@ function ColorPicker( options ) {
 		this.opt = null;
 		this.$el = null;
 	};
-	this.getColor = ( format ) => core.getColor( format );
-	this.setColor = ( color, format ) => core.setColor( color, format );
-	this.setOption = ( options ) => core.setOption( options );
-	this.clear = () => core.clear();
+	this.getColor = ( format ) => {
+		return core.getColor( format )
+	};
+	this.setColor = ( color, format ) => {
+		return core.setColor( color, format )
+	};
+	this.setOption = ( options ) => {
+		return core.setOption( options )
+	};
+	this.clear = () => {
+		return core.clear()
+	};
 }
 
 export default ColorPicker;

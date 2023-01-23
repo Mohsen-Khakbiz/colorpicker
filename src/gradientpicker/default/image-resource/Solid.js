@@ -14,19 +14,19 @@ export class Solid extends Gradient {
 	}
 
 	getColorString() {
-		return this.json.colorsteps[ 0 ].color;
+		return Gradient.getColor( this.json.colorsteps[ 0 ].color );
 	}
 
 	toString() {
-		return this.json.colorsteps[ 0 ].color;
+		return Gradient.getColor( this.json.colorsteps[ 0 ].color );
 	}
 
 	static parse( str ) {
 		return new Solid( {
-			color: str,
+			color: Gradient.getColor( str ),
 			colorsteps: [
-				new ColorStep( { index: 0, color: str, percent: 0 } ),
-				new ColorStep( { index: 1, color: Color.blend( str, Color.random(), 1 ), percent: 100 } ),
+				new ColorStep( { index: 0, color: Gradient.getColor( str ), percent: 0 } ),
+				new ColorStep( { index: 1, color: Color.blend( Gradient.getColor( str ), Color.random(), 1 ), percent: 100 } ),
 			]
 		} );
 	}

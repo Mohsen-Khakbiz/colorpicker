@@ -156,7 +156,7 @@ export default class ColorInformation extends UIElement {
 		const code = this.refs.$hexCode.val();
 		if (
 			code.startsWith( '--' ) ||
-			( code.charAt( 0 ) === '#' && ( code.length === 7 || code.length === 9 ) )
+			( code.startsWith( '#' ) && ( code.length === 7 || code.length === 9 ) )
 		) {
 			this.$store.dispatch( '/changeColor', code );
 			this.$store.emit( 'lastUpdateColor' );

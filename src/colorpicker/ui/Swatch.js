@@ -59,7 +59,7 @@ export default class Swatch extends UIElement {
 	[ 'click $index button' ]( e ) {
 		[ ...e.$delegateTarget.el.closest( 'ul' ).querySelectorAll( 'button' ) ].forEach( button => button.classList.remove( 'is-selected' ) );
 		e.$delegateTarget.el.classList.add( 'is-selected' );
-		this.$store.dispatch( '/changeColor', e.$delegateTarget.attr( 'data-color' ), false, this.opt.getCssVarFrom );
+		this.$store.dispatch( '/changeColor', e.$delegateTarget.attr( 'data-color' ), false, window.lqdColorPickerGetCssVarsFrom || document.documentElement );
 		this.$store.emit( 'lastUpdateColor' );
 	}
 

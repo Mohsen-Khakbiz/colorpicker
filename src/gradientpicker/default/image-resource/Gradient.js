@@ -201,4 +201,11 @@ export class Gradient extends ImageResource {
 		var angle = Math.floor( Math.random() * 1000 ) % 360;
 		return `linear-gradient(${ angle }deg, ${ Color.random() } 0%, ${ Color.random() } 100%)`
 	}
+
+	static getColor( c ) {
+		if ( c.startsWith( '--' ) ) {
+			return `var(${ c })`;
+		}
+		return c;
+	}
 }
