@@ -18,12 +18,20 @@ export default class Swatch extends UIElement {
     `;
 	}
 
+	initialize() {
+		super.initialize();
+		setTimeout( () => {
+			if ( this?.$store?.colorCssVar ) {
+				this.$el.find( `[data-color=${ this.$store.colorCssVar }]` )?.classList?.add( 'is-selected' );
+			}
+		}, 10 )
+	}
+
 	[ 'load $index' ]() {
 		const colors = this.$store.dispatch( '/swatch.index' );
 		return `
       <ul class="el-cp-colors">
         ${ colors.map( color => {
-			console.log( color );
 			const isCssVar = color.startsWith( '--' );
 			return `
 			<li>

@@ -108,6 +108,7 @@ export default class ColorManager extends BaseModule {
 	[ '/toString' ]( $store, type ) {
 		type = type || $store.format;
 		const obj = $store[ type ] || $store.rgb;
+		// if clearing color
 		if ( type === '' || Object.keys( obj ).length === 0 ) {
 			return '';
 		}
@@ -119,6 +120,9 @@ export default class ColorManager extends BaseModule {
 
 	[ '/toColor' ]( $store, type ) {
 		type = type || ( $store.format === '' ? 'hex' : $store.format );
+		if ( $store.colorCssVar ) {
+			return `var(${ $store.colorCssVar })`;
+		}
 		switch ( type ) {
 			case 'rgb':
 				return $store.dispatch( '/toRGB' );

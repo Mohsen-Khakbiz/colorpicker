@@ -22,7 +22,6 @@ export class Solid extends Gradient {
 	}
 
 	static parse( str ) {
-		console.log( this );
 		return new Solid( {
 			color: str,
 			colorsteps: [
