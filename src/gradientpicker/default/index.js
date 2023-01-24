@@ -184,10 +184,11 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		var colorstep =
 			this.image.colorsteps[ this.selectedColorStepIndex || 0 ] ||
 			{ color: 'rgba(0, 0, 0, 1)', };
-		if ( colorstep.color.startsWith( 'var(' ) ) {
-			colorstep.color = colorstep.color.replace( 'var(', '' ).replace( ')', '' ).trim();
+		let { color } = colorstep;
+		if ( color.startsWith( 'var(' ) ) {
+			color = color.replace( 'var(', '' ).replace( ')', '' ).trim();
 		}
-		return colorstep.color;
+		return color;
 	}
 
 	'@changeGradientEditor'( data ) {

@@ -268,12 +268,14 @@ export default class GradientEditor extends UIElement {
 		var prev = list.filter( it => it.offset.value <= percent ).pop();
 		var next = list.filter( it => it.offset.value >= percent ).shift();
 		var ind;
+		let prevColor = prev.color;
+		let nextColor = next.color;
 
-		if ( prev && prev.color.startsWith( 'var(' ) ) {
-			prev.color = getComputedStyle( getColorFrom ).getPropertyValue( prev.color.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+		if ( prev && prevColor.startsWith( 'var(' ) ) {
+			prevColor = getComputedStyle( getColorFrom ).getPropertyValue( prevColor.replace( 'var(', '' ).replace( ')', '' ) ).trim();
 		}
-		if ( next && next.color.startsWith( 'var(' ) ) {
-			next.color = getComputedStyle( getColorFrom ).getPropertyValue( next.color.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+		if ( next && nextColor.startsWith( 'var(' ) ) {
+			nextColor = getComputedStyle( getColorFrom ).getPropertyValue( nextColor.replace( 'var(', '' ).replace( ')', '' ) ).trim();
 		}
 
 		if ( prev && next ) {
@@ -281,8 +283,8 @@ export default class GradientEditor extends UIElement {
 			this.colorsteps.splice( ind, 0, {
 				offset: Length.percent( percent ),
 				color: Color.mix(
-					prev.color,
-					next.color,
+					prevColor,
+					nextColor,
 					( percent - prev.offset.value ) /
 					( next.offset.value - prev.offset.value )
 				),
@@ -314,11 +316,16 @@ export default class GradientEditor extends UIElement {
 	}
 
 	reloadStepList() {
+		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		this.refs.$stepList.html(
 			this.colorsteps
 				.map( ( it, index ) => {
+					let bgColor = it.color;
+					if ( bgColor.startsWith( 'var(' ) ) {
+						bgColor = getComputedStyle( getColorFrom ).getPropertyValue( bgColor.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+					}
 					return `<div class='step ${ this.colorsteps.length <= 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
-						<div class='color-view' style="background-color: ${ it.color }"></div>
+						<div class='color-view' style="background-color: ${ bgColor }"></div>
 						<button type="button" class="remove-step" title="Remove color stop">&times;</button>
 					</div>`;
 				} )
@@ -501,10 +508,15 @@ export default class GradientEditor extends UIElement {
 	}
 
 	'@setColorStepColor'( color ) {
+		let bgColor = color;
+		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
+		if ( bgColor.startsWith( 'var(' ) ) {
+			bgColor = getComputedStyle( getColorFrom ).getPropertyValue( bgColor.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+		}
 		if ( this.currentStep ) {
 			this.currentStep.color = color;
 			this.$colorView.css( {
-				'background-color': color,
+				'background-color': bgColor,
 			} );
 			this.setColorUI();
 			this.updateData();

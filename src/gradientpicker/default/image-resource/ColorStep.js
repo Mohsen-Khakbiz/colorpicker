@@ -122,7 +122,7 @@ export class ColorStep extends Item {
 	}
 
 	static parse( colorStepString ) {
-		const arr = colorStepString.trim().split( ' ' );
+		const arr = colorStepString.trim().split( ' ' ).filter( it => it.trim() );
 		let color = arr[ 0 ];
 		let colorsteps = [];
 

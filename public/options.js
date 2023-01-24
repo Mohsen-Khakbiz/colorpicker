@@ -35,7 +35,7 @@ const basicOpts = {
 };
 
 const gradientOpts = {
-	gradient: "linear-gradient(to right, rgba(255,255,0,0.5) 0%, #ef2569 35%, green 69%, var(--e-global-color-primary) 100%)",
+	gradient: "linear-gradient(0deg, var(--e-global-color-primary)  0%,#179c8f  100%)",
 	colorpicker: {
 		// color: '',
 		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
