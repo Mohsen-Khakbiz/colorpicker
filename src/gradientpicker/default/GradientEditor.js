@@ -441,6 +441,7 @@ export default class GradientEditor extends UIElement {
 	}
 
 	getLinearGradient() {
+		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		if ( this.colorsteps.length === 0 ) {
 			return '';
 		}
@@ -452,7 +453,11 @@ export default class GradientEditor extends UIElement {
 
 		return `linear-gradient(to right, ${ this.colorsteps
 			.map( it => {
-				return `${ it.color } ${ it.offset }`;
+				let { color } = it;
+				if ( color.startsWith( 'var(' ) ) {
+					color = getComputedStyle( getColorFrom ).getPropertyValue( color.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+				}
+				return `${ color } ${ it.offset }`;
 			} )
 			.join( ',' ) })`;
 	}
