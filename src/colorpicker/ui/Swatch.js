@@ -21,26 +21,31 @@ export default class Swatch extends UIElement {
 	initialize() {
 		super.initialize();
 		setTimeout( () => {
+			const getCssVarFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 			if ( this?.$store?.colorCssVar ) {
 				this.$el.find( `[data-color=${ this.$store.colorCssVar }]` )?.classList?.add( 'is-selected' );
 			}
+			[ ...this.refs.$index.el.querySelectorAll( 'button' ) ].forEach( button => {
+				const colorData = button.dataset.color;
+				if ( colorData?.startsWith( '--' ) ) {
+					button.style.setProperty( '--color', getComputedStyle( getCssVarFrom ).getPropertyValue( button.dataset.color ) );
+				}
+			} )
 		}, 10 )
 	}
 
 	[ 'load $index' ]() {
 		const colors = this.$store.dispatch( '/swatch.index' );
-		const getCssVarFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		return `
       <ul class="el-cp-colors">
         ${ colors.map( color => {
-			const isCssVar = color.startsWith( '--' );
 			return `
 			<li>
 				<button
 				type="button"
 				data-color="${ color }"
 				class="el-cp-colors__item"
-				style="--color: ${ isCssVar ? getComputedStyle( getCssVarFrom ).getPropertyValue( color ) : color }">
+				style="--color: ${ color }">
 				${ color }
 				</button>
 			</li>
