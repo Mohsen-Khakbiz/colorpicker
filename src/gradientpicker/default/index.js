@@ -211,6 +211,8 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
 		if ( type === 'solid' ) {
 
+			console.log( this.image );
+
 			this.image = new Solid( {
 				colorsteps: [
 					this.image?.json?.colorsteps[ 0 ],

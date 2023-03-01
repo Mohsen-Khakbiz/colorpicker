@@ -103,7 +103,6 @@ export class LinearGradient extends Gradient {
 						: Length.deg( +DEFINED_ANGLES[ newValue ] );
 				}
 			} );
-
 		return new LinearGradient( { angle, colorsteps } );
 	}
 }

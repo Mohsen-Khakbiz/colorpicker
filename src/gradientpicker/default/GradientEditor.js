@@ -267,6 +267,12 @@ export default class GradientEditor extends UIElement {
 		}
 		var percent = ( ( x - minX ) / rect.width ) * 100;
 
+		this.colorsteps.forEach( ( step, i ) => {
+			if ( !step.color || step.color === '' ) {
+				step.color = this.lastSelectedStepColor || Color.random();
+			}
+		} )
+
 		var list = this.colorsteps.map( ( it, index ) => ( { index, color: it.color, offset: it.offset } ) );
 
 		var prev = list.filter( it => it.offset.value <= percent ).pop();
@@ -374,6 +380,7 @@ export default class GradientEditor extends UIElement {
 			step.attr( 'data-is-active', false );
 		} );
 		this.$currentStep.attr( 'data-is-active', true );
+		this.lastSelectedStepColor = this.currentStep.color;
 	}
 
 	'mousedown $stepList .step'( e ) {
