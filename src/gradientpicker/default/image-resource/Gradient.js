@@ -1,3 +1,4 @@
+import Color from '@easylogic/color';
 import { ImageResource } from "./ImageResource";
 import { ColorStep } from "./ColorStep";
 import { isUndefined } from "../../../util/functions/func";
@@ -203,7 +204,7 @@ export class Gradient extends ImageResource {
 	}
 
 	static getColor( c ) {
-		if ( c.startsWith( '--' ) ) {
+		if ( c?.startsWith( '--' ) ) {
 			return `var(${ c })`;
 		}
 		return c;

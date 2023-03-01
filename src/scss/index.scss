@@ -47,6 +47,8 @@
 	user-select: none;
 	-webkit-user-select: none;
 	color: var(--color-fill);
+	transition: all 0.65s cubic-bezier(0.23, 1, 0.320, 1);
+	transition-property: opacity, transform;
 
 	&,
 	button,

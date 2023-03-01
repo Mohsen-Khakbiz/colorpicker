@@ -21,14 +21,13 @@ export default class GradientEditor extends UIElement {
 		super.initialize();
 
 		const defaultColor = Color.random();
-		var colorsteps = [
-			{ offset: Length.percent( 0 ), color: defaultColor },
-			{ offset: Length.percent( 100 ), color: Color.blend( defaultColor, Color.random(), 1 ) },
-		];
 
 		this.type = 'solid';
 		this.index = 0;
-		this.colorsteps = colorsteps;
+		this.colorsteps = [
+			{ offset: Length.percent( 0 ), color: defaultColor },
+			{ offset: Length.percent( 100 ), color: Color.blend( defaultColor, Color.random(), 1 ) },
+		];
 		this.radialPosition = [ Length.percent( 50 ), Length.percent( 50 ) ];
 		this.radialType = 'ellipse';
 	}
@@ -65,7 +64,7 @@ export default class GradientEditor extends UIElement {
 		}
 
 		if ( !str || str === '' ) {
-			str = `${ this.color } 0%`;
+			str = `${ this.color || Color.random() } 0%`;
 		}
 
 		var results = Color.convertMatches( str );
@@ -73,9 +72,15 @@ export default class GradientEditor extends UIElement {
 			.split( ',' )
 			.map( it => it.trim() )
 			.map( it => {
-				var [ color, offset1 ] = it.split( ' ' ).filter( str => str.length );
-				var offset = Length.parse( offset1 );
-				color = Color.reverseMatches( color, results.matches );
+				var res = it.split( ' ' ).filter( str => str.length );
+				if ( res.length === 1 ) {
+					res = [ this.color || Color.random(), res[ 0 ] ];
+				}
+				var color = res[ 0 ];
+				var offset = Length.parse( res[ 1 ] );
+				if ( !color.startsWith( 'var(' ) ) {
+					color = Color.reverseMatches( color, results.matches );
+				}
 				if ( offset.isDeg() ) {
 					offset = Length.percent( ( offset.value / 360 ) * 100 );
 				}
@@ -87,7 +92,7 @@ export default class GradientEditor extends UIElement {
 				color: colorsteps[ 0 ].color,
 				offset: Length.percent( 100 ),
 			} );
-		}
+		};
 
 		this.cachedStepListRect = null;
 
@@ -113,12 +118,12 @@ export default class GradientEditor extends UIElement {
                     <div class='step-list' ref="$stepList" ></div>
                 </div>
             </div>
-            <div class='sub-editor' ref='$subEditor'> 
+            <div class='sub-editor' ref='$subEditor'>
               <div data-editor='angle'>
                 <label>Angle</label>
                 <div class='unit'>
                   <div><input type='range' data-key='angle' min='0' max="360" step='1' ref='$angle' /> </div>
-                  <div><input type='number' data-key='angle' min='0' max="360" step='1' ref='$angleNumber' /></div> 
+                  <div><input type='number' data-key='angle' min='0' max="360" step='1' ref='$angleNumber' /></div>
                   <span>deg</span>
                 </div>
               </div>
@@ -247,12 +252,11 @@ export default class GradientEditor extends UIElement {
 	'click $back'( e ) {
 		if ( this.startXY ) return;
 
-		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
-
 		var rect = this.refs.$stepList.rect();
 
 		var minX = rect.x;
 		var maxX = rect.right;
+		var ind;
 
 		var x = e.xy.x;
 
@@ -267,15 +271,14 @@ export default class GradientEditor extends UIElement {
 
 		var prev = list.filter( it => it.offset.value <= percent ).pop();
 		var next = list.filter( it => it.offset.value >= percent ).shift();
-		var ind;
-		let prevColor = prev.color;
-		let nextColor = next.color;
+		let prevColor = prev?.color;
+		let nextColor = next?.color;
 
 		if ( prev && prevColor.startsWith( 'var(' ) ) {
-			prevColor = getComputedStyle( getColorFrom ).getPropertyValue( prevColor.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+			prevColor = this.getValueOfCssVar( prevColor );
 		}
 		if ( next && nextColor.startsWith( 'var(' ) ) {
-			nextColor = getComputedStyle( getColorFrom ).getPropertyValue( nextColor.replace( 'var(', '' ).replace( ')', '' ) ).trim();
+			nextColor = this.getValueOfCssVar( nextColor );
 		}
 
 		if ( prev && next ) {
@@ -293,18 +296,18 @@ export default class GradientEditor extends UIElement {
 			ind = prev.index + 1;
 			this.colorsteps.splice( ind, 0, {
 				offset: Length.percent( percent ),
-				color: 'rgba(0, 0, 0, 1)',
+				color: prev.color,
 			} );
 		} else if ( next ) {
 			this.colorsteps.unshift( {
 				offset: Length.percent( percent ),
-				color: 'rgba(0, 0, 0, 1)',
+				color: next.color,
 			} );
 			ind = 0;
 		} else {
 			this.colorsteps.push( {
 				offset: Length.percent( 0 ),
-				color: 'rgba(0, 0, 0, 1)',
+				color: Color.random(),
 			} );
 			ind = this.colorsteps.length - 1;
 		}
@@ -315,14 +318,14 @@ export default class GradientEditor extends UIElement {
 		this.selectStep( ind );
 	}
 
-	reloadStepList() {
-		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
+	reloadStepList( isClear ) {
+		const colorsteps = isClear ? [] : this.colorsteps;
 		this.refs.$stepList.html(
-			this.colorsteps
+			colorsteps
 				.map( ( it, index ) => {
 					let bgColor = it.color;
 					if ( bgColor.startsWith( 'var(' ) ) {
-						bgColor = getComputedStyle( getColorFrom ).getPropertyValue( bgColor.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+						bgColor = this.getValueOfCssVar( bgColor )
 					}
 					return `<div class='step ${ this.colorsteps.length <= 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
 						<div class='color-view' style="background-color: ${ bgColor }"></div>
@@ -333,24 +336,26 @@ export default class GradientEditor extends UIElement {
 		);
 	}
 
-	'click $stepList .remove-step'() {
-		this.removeStep( this.index );
+	'click $stepList .remove-step'( e ) {
+		this.removeStep( e.delegateTarget?.parentElement?.dataset?.index || this.index );
 	}
 
 	removeStep( index ) {
+		if ( this.colorsteps.length <= 2 ) return;
 		this.colorsteps.splice( index, 1 );
-		var currentStep = this.colorsteps[ index ];
-		var currentIndex = index;
-		if ( !currentStep ) {
-			currentStep = this.colorsteps[ index - 1 ];
-			currentIndex = index - 1;
-		}
-
-		if ( currentStep ) {
-			this.selectStep( currentIndex );
-		}
+		// var currentStep = this.colorsteps[ index ];
+		// var currentIndex = index;
+		// if ( !currentStep ) {
+		// 	currentStep = this.colorsteps[ index - 1 ];
+		// 	currentIndex = index - 1;
+		// }
+		// if ( currentStep ) {
+		// 	this.selectStep( currentIndex );
+		// }
 		this.refresh();
 		this.updateData();
+		// select prev step
+		this.selectStep( index - 1 );
 	}
 
 	selectStep( index ) {
@@ -437,18 +442,28 @@ export default class GradientEditor extends UIElement {
 		this.$currentStep.css( {
 			left: Length.percent( percent ),
 		} );
-		// this.refs.$offset.val(this.currentStep.offset.value);
 		this.setColorUI();
 		this.updateData();
 	}
 
-	refresh() {
-		this.reloadStepList();
-		this.setColorUI();
+	refresh( isClear ) {
+		this.reloadStepList( isClear );
+		this.setColorUI( isClear );
+		const elColorpicker = this.opt.container.querySelector( '.el-colorpicker' );
+		if ( this.type !== 'solid' && isClear ) {
+			elColorpicker.style.transform = 'scale(0.95)';
+			elColorpicker.style.opacity = '0.7';
+			elColorpicker.style.pointerEvents = 'none';
+			this.refs.$subEditor.css( 'display', 'none' );
+		} else {
+			elColorpicker.style.transform = '';
+			elColorpicker.style.opacity = '';
+			elColorpicker.style.pointerEvents = '';
+			this.refs.$subEditor.css( 'display', '' );
+		}
 	}
 
 	getLinearGradient() {
-		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		if ( this.colorsteps.length === 0 ) {
 			return '';
 		}
@@ -462,15 +477,15 @@ export default class GradientEditor extends UIElement {
 			.map( it => {
 				let { color } = it;
 				if ( color.startsWith( 'var(' ) ) {
-					color = getComputedStyle( getColorFrom ).getPropertyValue( color.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+					color = this.getValueOfCssVar( color )
 				}
 				return `${ color } ${ it.offset }`;
 			} )
 			.join( ',' ) })`;
 	}
 
-	setColorUI() {
-		this.refs.$stepList.css( 'background-image', this.getLinearGradient() );
+	setColorUI( isClear ) {
+		this.refs.$stepList.css( 'background-image', isClear ? '' : this.getLinearGradient() );
 		this.refs.$el.attr( 'data-selected-editor', this.type );
 	}
 
@@ -502,16 +517,14 @@ export default class GradientEditor extends UIElement {
 
 	'@clearColorSteps'() {
 		if ( this.type === 'solid' ) return;
-		this.colorsteps = [];
-		this.refresh();
-		this.updateData();
+		this.refresh( true );
+		this.updateData( true );
 	}
 
 	'@setColorStepColor'( color ) {
 		let bgColor = color;
-		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 		if ( bgColor.startsWith( 'var(' ) ) {
-			bgColor = getComputedStyle( getColorFrom ).getPropertyValue( bgColor.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+			bgColor = this.getValueOfCssVar( bgColor )
 		}
 		if ( this.currentStep ) {
 			this.currentStep.color = color;
@@ -523,15 +536,20 @@ export default class GradientEditor extends UIElement {
 		}
 	}
 
-	updateData() {
+	updateData( isClear ) {
 		this.$store.emit( 'changeGradientEditor', {
 			type: this.type,
 			index: this.index,
 			angle: this.angle,
-			colorsteps: this.colorsteps,
+			colorsteps: isClear ? [] : this.colorsteps,
 			radialPosition: this.radialPosition,
 			radialType: this.radialType,
 		} );
+	}
+
+	getValueOfCssVar( color ) {
+		const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
+		return getComputedStyle( getColorFrom ).getPropertyValue( color.replace( 'var(', '' ).replace( ')', '' ) ).trim()
 	}
 
 	toggleComponents( type ) {

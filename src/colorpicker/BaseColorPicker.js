@@ -70,8 +70,8 @@ export default class BaseColorPicker extends UIElement {
 		this.render( this.$root );
 
 		// set color
-		this.$store.dispatch( '/changeFormat', this.opt.format );
-		this.$store.dispatch( '/initColor', this.opt.color );
+		this.$store.dispatch( '/changeFormat', this.opt?.colorpicker?.format || this.opt.format );
+		this.$store.dispatch( '/initColor', this.opt?.colorpicker?.color || this.opt.color );
 
 		// initial events
 		this.initializeEvent();

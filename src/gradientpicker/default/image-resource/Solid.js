@@ -7,8 +7,11 @@ export class Solid extends Gradient {
 	getDefaultObject( obj = {} ) {
 		return super.getDefaultObject( {
 			type: "solid",
-			color: '',
-			colorsteps: [],
+			color: obj[ 'colorsteps' ] ? Gradient.getColor( obj.colorsteps[ 0 ]?.color || Color.random() ) : Color.random(),
+			colorsteps: [
+				new ColorStep( { index: 0, color: obj[ 'colorsteps' ] ? Gradient.getColor( obj.colorsteps[ 0 ]?.color || Color.random() ) : Color.random(), percent: 0 } ),
+				new ColorStep( { index: 1, color: obj[ 'colorsteps' ] ? Gradient.getColor( obj.colorsteps[ 1 ]?.color || Color.random() ) : Color.random(), percent: 100 } ),
+			],
 			...obj
 		} );
 	}

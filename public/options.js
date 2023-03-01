@@ -34,10 +34,14 @@ const basicOpts = {
 	},
 };
 
+
+/**
+ * NOTICE: gradient and colorpicker.color BOTH MUST BE FILLED
+ */
 const gradientOpts = {
-	gradient: "linear-gradient(0deg, var(--e-global-color-primary)  0%,#179c8f  100%)",
+	gradient: 'linear-gradient(0deg, var(--e-global-color-primary) 0% ,#179c8f 100%)',
 	colorpicker: {
-		// color: '',
+		color: 'var(--e-global-color-primary)',
 		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
 	},
 	onInit: ( self ) => {

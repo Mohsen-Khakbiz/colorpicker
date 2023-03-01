@@ -34,9 +34,8 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		};
 	}
 
-	parseImage( str ) {
+	parseImage( str = '' ) {
 
-		var results = Color.convertMatches( str );
 		let image = null;
 
 		if ( str.search( reg ) < 0 ) {
@@ -56,27 +55,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		} else if ( str.includes( 'conic' ) ) {
 			image = ConicGradient.parse( str );
 		}
-
-		// if ( results.matches?.length <= 1 && str.search( reg ) < 0 ) {
-		// 	return Solid.parse( str );
-		// }
-
-		// results.str.match( reg ).forEach( value => {
-		// 	value = Color.reverseMatches( value, results.matches );
-		// 	if ( value.includes( 'repeating-linear-gradient' ) ) {
-		// 		image = RepeatingLinearGradient.parse( value );
-		// 	} else if ( value.includes( 'linear-gradient' ) ) {
-		// 		image = LinearGradient.parse( value );
-		// 	} else if ( value.includes( 'repeating-radial-gradient' ) ) {
-		// 		image = RepeatingRadialGradient.parse( value );
-		// 	} else if ( value.includes( 'radial' ) ) {
-		// 		image = RadialGradient.parse( value );
-		// 	} else if ( value.includes( 'repeating-conic-gradient' ) ) {
-		// 		image = RepeatingConicGradient.parse( value );
-		// 	} else if ( value.includes( 'conic' ) ) {
-		// 		image = ConicGradient.parse( value );
-		// 	}
-		// } );
 
 		return image;
 
@@ -110,7 +88,13 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		this.$root.el.classList = '';
 		this.$root.el.classList.add( 'el-gradientpicker' );
 
-		this.setGradient( this.opt.gradient || this.opt.colorpicker?.color );
+		let color = this.opt.gradient || this.opt.colorpicker?.color;
+
+		if ( !color || color === '' ) {
+			color = Color.random();
+		}
+
+		this.setGradient( color );
 	}
 
 	setGradient( gradientString ) {
@@ -120,7 +104,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		$tabEl.value = type;
 		$tabEl.selectedIndex = [ ...$tabEl.options ].findIndex( opt => opt.value === type );
 		$tabEl.dispatchEvent( new Event( 'change' ) );
-		this.selectTabContent( this.image.type );
+		// this.selectTabContent( this.image.type );
 	}
 
 	/**
@@ -153,7 +137,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 			${ options
 				.map( ( it ) => {
 					return `
-				<option value='${ it.type }' title='${ it.title }' > 
+				<option value='${ it.type }' title='${ it.title }' >
 				${ it.title }
 				</option>`;
 				} )
@@ -181,14 +165,18 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 	}
 
 	getCurrentStepColor() {
-		var colorstep =
-			this.image.colorsteps[ this.selectedColorStepIndex || 0 ] ||
-			{ color: 'rgba(0, 0, 0, 1)', };
-		let { color } = colorstep;
-		if ( color.startsWith( 'var(' ) ) {
-			color = color.replace( 'var(', '' ).replace( ')', '' ).trim();
+		var colorstep = this.image.colorsteps[ this.selectedColorStepIndex || 0 ];
+
+		if ( !colorstep || ( !colorstep?.color || colorstep?.color === '' ) ) [
+			colorstep = { color: this.color || Color.random() }
+		]
+
+		let stepColorsColor = colorstep.color;
+		if ( stepColorsColor.startsWith( 'var(' ) ) {
+			stepColorsColor = stepColorsColor.replace( 'var(', '' ).replace( ')', '' ).trim();
 		}
-		return color;
+
+		return stepColorsColor;
 	}
 
 	'@changeGradientEditor'( data ) {
@@ -223,7 +211,12 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
 		if ( type === 'solid' ) {
 
-			this.image = Solid.parse( this.image?.colorsteps[ 0 ]?.color );
+			this.image = new Solid( {
+				colorsteps: [
+					this.image?.json?.colorsteps[ 0 ],
+					this.image?.json?.colorsteps[ 1 ],
+				]
+			} );
 
 			this.$store.emit(
 				'setGradientEditor',
@@ -265,7 +258,11 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		const colorsteps = data.colorsteps || gradient.colorsteps || [];
 
 		// linear, conic 은 angle 도 같이 설정한다.
-		const angle = data.angle || gradient.angle;
+		let angle = data.angle || gradient.angle;
+
+		if ( typeof angle === 'number' ) {
+			angle = Length.deg( angle );
+		}
 
 		// radial 은  radialType 도 같이 설정한다.
 		const radialType = data.radialType || gradient.radialType || 'ellipse';

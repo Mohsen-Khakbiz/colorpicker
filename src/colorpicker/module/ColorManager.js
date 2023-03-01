@@ -29,8 +29,11 @@ export default class ColorManager extends BaseModule {
 
 		if ( typeof colorObj === 'string' && colorObj !== '' ) {
 			// if color is a css var
-			if ( colorObj.startsWith( '--' ) ) {
+			if ( colorObj.startsWith( '--' ) || colorObj.startsWith( 'var(' ) ) {
 				colorCssVar = colorObj;
+				if ( colorObj.startsWith( 'var(' ) ) {
+					colorObj = colorObj.replace( 'var(', '' ).replace( ')', '' ).trim();
+				}
 				const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 				const color = getComputedStyle( getColorFrom ).getPropertyValue( colorObj );
 				colorObj = color;
@@ -76,7 +79,6 @@ export default class ColorManager extends BaseModule {
 			$store.lastrgb = $store.rgb;
 			$store.lasthsl = $store.hsl;
 			$store.lastformat = $store.format;
-
 
 			$store.rgb = {};
 			$store.hsl = { h: 0, s: 0, l: 100 };

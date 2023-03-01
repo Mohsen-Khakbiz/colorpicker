@@ -1,97 +1,97 @@
 {
-  "name": "@easylogic/colorpicker",
-  "version": "2.1.4",
-  "description": "simple colorpicker used anywhere",
-  "main": "src/colorpicker/index.js",
-  "scripts": {
-    "dev": "webpack serve --progress --mode development",
-    "prebuild": "rm -rf dist",
-    "build": "webpack --mode production",
-    "docs": "http-server ./docs",
-    "test": "NODE_ENV=test jest --watch",
-    "pub": "npm run build && npm publish",
-    "ana": "webpack --profile --json > stats.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/easylogic/colorpicker.git"
-  },
-  "keywords": [
-    "colorview",
-    "colorpicker",
-    "imagefilter",
-    "color",
-    "rgb",
-    "webgl",
-    "chromdevtool",
-    "macos",
-    "sketch",
-    "palette"
-  ],
-  "author": "easylogic",
-  "contributors": [
-    {
-      "name": "easylogic",
-      "email": "cyberuls@gmail.com",
-      "url": "https://colorpicker.easylogic.studio"
-    },
-    {
-      "name": "redgoose",
-      "email": "scripter@me.com",
-      "url": "https://redgoose.me"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/easylogic/easylogic-colorpicker/issues"
-  },
-  "homepage": "https://colorpicker.easylogic.studio/",
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.5",
-    "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.6",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^6.3.0",
-    "css-minimizer-webpack-plugin": "^3.0.2",
-    "dotenv": "^10.0.0",
-    "file-loader": "^6.2.0",
-    "html-loader": "^2.1.2",
-    "html-webpack-plugin": "^5.3.2",
-    "mini-css-extract-plugin": "^2.3.0",
-    "postcss": "^8.3.8",
-    "sass": "^1.42.1",
-    "sass-loader": "^12.1.0",
-    "terser-webpack-plugin": "^5.2.4",
-    "uglify-js": "^3.14.2",
-    "webpack": "^5.54.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.0"
-  },
-  "dependencies": {
-    "@easylogic/color": "^0.0.7"
-  },
-  "peerDependencies": {
-    "@easylogic/color": "^0.0.7"
-  },
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/src",
-      "<rootDir>/node_modules"
-    ],
-    "globals": {
-      "NODE_ENV": "test"
-    },
-    "verbose": false,
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "testRegex": "test/.*\\.spec\\.js$",
-    "testEnvironment": "node"
-  }
+	"name": "@easylogic/colorpicker",
+	"version": "2.1.4",
+	"description": "simple colorpicker used anywhere",
+	"main": "src/colorpicker/index.js",
+	"scripts": {
+		"dev": "webpack serve --progress --mode development",
+		"prebuild": "rm -rf dist",
+		"build": "webpack --mode production",
+		"docs": "http-server ./docs",
+		"test": "NODE_ENV=test jest --watch",
+		"pub": "npm run build && npm publish",
+		"ana": "webpack --profile --json > stats.json"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/easylogic/colorpicker.git"
+	},
+	"keywords": [
+		"colorview",
+		"colorpicker",
+		"imagefilter",
+		"color",
+		"rgb",
+		"webgl",
+		"chromdevtool",
+		"macos",
+		"sketch",
+		"palette"
+	],
+	"author": "easylogic",
+	"contributors": [
+		{
+			"name": "easylogic",
+			"email": "cyberuls@gmail.com",
+			"url": "https://colorpicker.easylogic.studio"
+		},
+		{
+			"name": "redgoose",
+			"email": "scripter@me.com",
+			"url": "https://redgoose.me"
+		}
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/easylogic/easylogic-colorpicker/issues"
+	},
+	"homepage": "https://colorpicker.easylogic.studio/",
+	"browserslist": [
+		"> 1%",
+		"last 2 versions"
+	],
+	"devDependencies": {
+		"@babel/cli": "^7.15.7",
+		"@babel/core": "^7.15.5",
+		"@babel/plugin-transform-runtime": "^7.15.0",
+		"@babel/preset-env": "^7.15.6",
+		"babel-loader": "^8.2.2",
+		"css-loader": "^6.3.0",
+		"css-minimizer-webpack-plugin": "^3.0.2",
+		"dotenv": "^10.0.0",
+		"file-loader": "^6.2.0",
+		"html-loader": "^2.1.2",
+		"html-webpack-plugin": "^5.3.2",
+		"mini-css-extract-plugin": "^2.3.0",
+		"postcss": "^8.3.8",
+		"sass": "^1.42.1",
+		"sass-loader": "^12.1.0",
+		"terser-webpack-plugin": "^5.2.4",
+		"uglify-js": "^3.14.2",
+		"webpack": "^5.54.0",
+		"webpack-cli": "^4.8.0",
+		"webpack-dev-server": "^4.3.0"
+	},
+	"dependencies": {
+		"@easylogic/color": "^0.0.7"
+	},
+	"peerDependencies": {
+		"@easylogic/color": "^0.0.7"
+	},
+	"jest": {
+		"modulePaths": [
+			"<rootDir>/src",
+			"<rootDir>/node_modules"
+		],
+		"globals": {
+			"NODE_ENV": "test"
+		},
+		"verbose": false,
+		"moduleFileExtensions": [
+			"js",
+			"json"
+		],
+		"testRegex": "test/.*\\.spec\\.js$",
+		"testEnvironment": "node"
+	}
 }
