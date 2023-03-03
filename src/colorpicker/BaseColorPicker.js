@@ -69,9 +69,11 @@ export default class BaseColorPicker extends UIElement {
 		// render component
 		this.render( this.$root );
 
+		const color = this.opt?.colorpicker?.color || this.opt.color || '#7fffd4';
+
 		// set color
 		this.$store.dispatch( '/changeFormat', this.opt?.colorpicker?.format || this.opt.format );
-		this.$store.dispatch( '/initColor', this.opt?.colorpicker?.color || this.opt.color );
+		this.$store.dispatch( '/initColor', color.trim() );
 
 		// initial events
 		this.initializeEvent();
@@ -99,7 +101,7 @@ export default class BaseColorPicker extends UIElement {
 	 * @param {string} format
 	 */
 	setColor( color, format = undefined ) {
-		this.$store.dispatch( '/changeColor', color );
+		this.$store.dispatch( '/changeColor', color.trim() );
 	}
 
 	clear() {

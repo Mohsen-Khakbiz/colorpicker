@@ -39,9 +39,11 @@ const basicOpts = {
  * NOTICE: gradient and colorpicker.color BOTH MUST BE FILLED
  */
 const gradientOpts = {
-	gradient: 'linear-gradient(0deg, var(--e-global-color-primary) 0% ,#179c8f 100%)',
+	// gradient: 'linear-gradient( 110deg , var(--e-global-color-primary)  0% , #ff985e  100%)',
+	gradient: '',
 	colorpicker: {
-		color: 'var(--e-global-color-primary)',
+		color: ' #3A25FF ',
+		// color: ' var(--e-global-color-primary) ',
 		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
 	},
 	onInit: ( self ) => {

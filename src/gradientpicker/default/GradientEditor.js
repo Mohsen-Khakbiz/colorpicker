@@ -322,6 +322,7 @@ export default class GradientEditor extends UIElement {
 		this.updateData();
 
 		this.selectStep( ind );
+		this.$store.emit( 'selectColorStep', this.currentStep.color );
 	}
 
 	reloadStepList( isClear ) {
@@ -349,19 +350,13 @@ export default class GradientEditor extends UIElement {
 	removeStep( index ) {
 		if ( this.colorsteps.length <= 2 ) return;
 		this.colorsteps.splice( index, 1 );
-		// var currentStep = this.colorsteps[ index ];
-		// var currentIndex = index;
-		// if ( !currentStep ) {
-		// 	currentStep = this.colorsteps[ index - 1 ];
-		// 	currentIndex = index - 1;
-		// }
-		// if ( currentStep ) {
-		// 	this.selectStep( currentIndex );
-		// }
+		let newActiveIndex = index - 1 < 0 ? 0 : index - 1;
+		this.currentStep = this.colorsteps[ newActiveIndex ];
 		this.refresh();
 		this.updateData();
 		// select prev step
-		this.selectStep( index - 1 );
+		this.selectStep( newActiveIndex );
+		this.$store.emit( 'selectColorStep', this.currentStep.color );
 	}
 
 	selectStep( index ) {
@@ -397,9 +392,9 @@ export default class GradientEditor extends UIElement {
 			}
 
 			this.startXY = e.xy;
-			this.$store.emit( 'selectColorStep', currentStepColor );
 			this.refs.$stepList.attr( 'data-selected-index', index );
 			this.cachedStepListRect = this.refs.$stepList.rect();
+			this.$store.emit( 'selectColorStep', currentStepColor );
 		}
 	}
 

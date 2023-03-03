@@ -25,11 +25,16 @@ export class Solid extends Gradient {
 	}
 
 	static parse( str ) {
+		let getSecondColorFrom = str;
+		if ( str.startsWith( 'var(' ) ) {
+			const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
+			getSecondColorFrom = getComputedStyle( getColorFrom ).getPropertyValue( str.replace( 'var(', '' ).replace( ')', '' ) ).trim()
+		}
 		return new Solid( {
 			color: Gradient.getColor( str ),
 			colorsteps: [
 				new ColorStep( { index: 0, color: Gradient.getColor( str ), percent: 0 } ),
-				new ColorStep( { index: 1, color: Color.blend( Gradient.getColor( str ), Color.random(), 1 ), percent: 100 } ),
+				new ColorStep( { index: 1, color: Color.blend( Gradient.getColor( getSecondColorFrom ), Color.random(), 1 ), percent: 100 } ),
 			]
 		} );
 	}

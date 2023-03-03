@@ -47,7 +47,7 @@ function ColorPicker( options ) {
 
 	switchType( options.type );
 
-	window.lqdColorPickerGetCssVarsFrom = this.opt.getCssVarFrom || document.documentElement;
+	window.lqdColorPickerGetCssVarsFrom = window.lqdColorPickerGetCssVarsFrom || this.opt.getCssVarFrom || document.documentElement;
 
 	/**
 	 * set type

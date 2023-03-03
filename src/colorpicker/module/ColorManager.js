@@ -29,17 +29,18 @@ export default class ColorManager extends BaseModule {
 
 		if ( typeof colorObj === 'string' && colorObj !== '' ) {
 			// if color is a css var
+			colorObj = colorObj.trim();
 			if ( colorObj.startsWith( '--' ) || colorObj.startsWith( 'var(' ) ) {
-				colorCssVar = colorObj;
 				if ( colorObj.startsWith( 'var(' ) ) {
 					colorObj = colorObj.replace( 'var(', '' ).replace( ')', '' ).trim();
 				}
+				colorCssVar = colorObj;
 				const getColorFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 				const color = getComputedStyle( getColorFrom ).getPropertyValue( colorObj );
 				colorObj = color;
 				isCssVar = true;
 			}
-			colorObj = Color.parse( colorObj.trim() )
+			colorObj = Color.parse( colorObj.trim() );
 		};
 
 		$store.alpha = colorObj?.a >= 0 ? colorObj.a : $store.alpha;
@@ -73,6 +74,11 @@ export default class ColorManager extends BaseModule {
 					break;
 			}
 
+			$store.lasthsv = $store.hsv;
+			$store.lastrgb = $store.rgb;
+			$store.lasthsl = $store.hsl;
+			$store.lastformat = $store.format;
+
 		} else { // clear
 
 			$store.lasthsv = $store.hsv;
@@ -82,9 +88,9 @@ export default class ColorManager extends BaseModule {
 
 			$store.rgb = {};
 			$store.hsl = { h: 0, s: 0, l: 100 };
-			$store.hsv = { h: 0, s: 0, v: 1 };
+			$store.hsv = { h: 0, s: 0, v: 0 };
 			$store.alpha = 1;
-			$store.format = 'hex';
+			$store.format = $store.format;
 
 		}
 

@@ -35,7 +35,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 	}
 
 	parseImage( str = '' ) {
-
 		let image = null;
 
 		if ( str.search( reg ) < 0 ) {
@@ -57,7 +56,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		}
 
 		return image;
-
 	}
 
 	callbackColorValue() {
@@ -94,7 +92,7 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 			color = Color.random();
 		}
 
-		this.setGradient( color );
+		this.setGradient( color.trim() );
 	}
 
 	setGradient( gradientString ) {
@@ -104,7 +102,6 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 		$tabEl.value = type;
 		$tabEl.selectedIndex = [ ...$tabEl.options ].findIndex( opt => opt.value === type );
 		$tabEl.dispatchEvent( new Event( 'change' ) );
-		// this.selectTabContent( this.image.type );
 	}
 
 	/**
@@ -211,12 +208,10 @@ export default class DefaultGradientPicker extends BaseColorPicker {
 
 		if ( type === 'solid' ) {
 
-			console.log( this.image );
-
 			this.image = new Solid( {
 				colorsteps: [
-					this.image?.json?.colorsteps[ 0 ],
-					this.image?.json?.colorsteps[ 1 ],
+					this.image?.colorsteps[ 0 ],
+					this.image?.colorsteps[ 1 ],
 				]
 			} );
 
