@@ -9,7 +9,7 @@ const basicOpts = {
 	// paletteHeight: 200,
 	// paletteThickness: undefined,
 	swatchTitle: undefined,
-	swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
+	swatchColors: [ { title: "Primary", color: "--e-global-color-primary" }, { title: "Secondary", color: "--e-global-color-secondary" }, { title: "Another color", color: "--e-global-color-ca88ef" } ],
 	onInit: ( self ) => {
 		custom = {
 			$color: document.querySelector( "#colorSample > i" ),
@@ -44,7 +44,7 @@ const gradientOpts = {
 	colorpicker: {
 		color: ' #3A25FF ',
 		// color: ' var(--e-global-color-primary) ',
-		swatchColors: [ "--e-global-color-primary", "--e-global-color-secondary", "--e-global-color-ca88ef" ],
+		swatchColors: basicOpts.swatchColors,
 	},
 	onInit: ( self ) => {
 		custom = {

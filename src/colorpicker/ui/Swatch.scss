@@ -77,5 +77,32 @@
 			outline: 2px solid;
 			box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
 		}
+		&__title {
+			display: inline-block;
+			padding: 4px 10px;
+			position: absolute;
+			bottom: calc(100% + 8px);
+			left: 50%;
+			z-index: 2;
+			pointer-events: none;
+			font-size: 12px;
+			line-height: 1;
+			background-color: #fff;
+			box-shadow: 0 10px 45px rgb(0 0 0 / 15%);
+			border-radius: 3px;
+			white-space: nowrap;
+			transform: translateX(-50%) translateY(3px) scale(0.95);
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.2s;
+		}
+		&:hover {
+
+			.el-cp-colors__item__title {
+				transform: translateX(-50%) translateY(0) scale(1);
+				opacity: 1;
+				visibility: visible;
+			}
+		}
 	}
 }

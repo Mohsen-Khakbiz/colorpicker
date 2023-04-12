@@ -38,7 +38,7 @@ export default class Swatch extends UIElement {
 		const colors = this.$store.dispatch( '/swatch.index' );
 		return `
       <ul class="el-cp-colors">
-        ${ colors.map( color => {
+        ${ colors.map( ( { title, color } ) => {
 			return `
 			<li>
 				<button
@@ -47,6 +47,7 @@ export default class Swatch extends UIElement {
 				class="el-cp-colors__item"
 				style="--color: ${ color }">
 				${ color }
+				<span class="el-cp-colors__item__title">${ title }</span>
 				</button>
 			</li>
 		`} ).join( '' ) }
