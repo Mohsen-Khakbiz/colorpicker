@@ -46,8 +46,8 @@ export default class Swatch extends UIElement {
 				data-color="${ color }"
 				class="el-cp-colors__item"
 				style="--color: ${ color }">
-				${ color }
-				<span class="el-cp-colors__item__title">${ title }</span>
+					<span class="el-cp-colors__item__color"></span>
+					${ title }
 				</button>
 			</li>
 		`} ).join( '' ) }

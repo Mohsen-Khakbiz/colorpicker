@@ -18,55 +18,46 @@
 }
 
 .el-cp-colors {
+	display: flex;
+	flex-wrap: wrap;
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	display: flex;
-	flex-wrap: wrap;
 	gap: var(--swatch-gap, 7px);
 
-	>li {
-		button {
-			display: block;
+	&__item {
+		display: flex;
+		gap: 0.55em;
+		align-items: center;
+		position: relative;
+		border: none;
+		margin: 0 0 0.35em;
+		padding: 0;
+		cursor: pointer;
+		outline: none;
+		background: none;
+		transition: box-shadow var(--speed-focus) ease-out;
+
+		&__color {
+			display: inline-block;
+			position: relative;
 			width: var(--swatch-item-size, 20px);
 			height: var(--swatch-item-size, 20px);
-			font-size: 0;
-			border: none;
 			border-radius: var(--swatch-item-stroke-radius);
-			margin: 0 auto;
-			padding: 0;
-			cursor: pointer;
-			outline: none;
-			transition: box-shadow var(--speed-focus) ease-out;
-
-			&:active {
-				opacity: .5;
-			}
-		}
-	}
-
-	&__item {
-		position: relative;
-		@include mixins.transparent-background(12px);
-
-		&:before,
-		&:after {
-			content: '';
-			position: absolute;
-			display: block;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			border-radius: var(--swatch-item-stroke-radius);
-		}
-
-		&:before {
 			background-color: var(--color);
-		}
 
-		&:after {
-			box-shadow: inset 0 0 0 1px var(--swatch-item-stroke-color);
+			&:before {
+				content: '';
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: -1;
+				@include mixins.transparent-background(8px);
+				border-radius: inherit;
+			}
 		}
 
 		&:focus,
@@ -74,34 +65,10 @@
 			box-shadow: 0 0 0 2px var(--color-key);
 		}
 		&.is-selected {
-			outline: 2px solid;
-			box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
-		}
-		&__title {
-			display: inline-block;
-			padding: 4px 10px;
-			position: absolute;
-			bottom: calc(100% + 8px);
-			left: 50%;
-			z-index: 2;
-			pointer-events: none;
-			font-size: 12px;
-			line-height: 1;
-			background-color: #fff;
-			box-shadow: 0 10px 45px rgb(0 0 0 / 15%);
-			border-radius: 3px;
-			white-space: nowrap;
-			transform: translateX(-50%) translateY(3px) scale(0.95);
-			opacity: 0;
-			visibility: hidden;
-			transition: all 0.2s;
-		}
-		&:hover {
 
-			.el-cp-colors__item__title {
-				transform: translateX(-50%) translateY(0) scale(1);
-				opacity: 1;
-				visibility: visible;
+			.el-cp-colors__item__color {
+				outline: 2px solid;
+				box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
 			}
 		}
 	}
