@@ -36,7 +36,7 @@
 		cursor: pointer;
 		outline: none;
 		background: none;
-		transition: box-shadow var(--speed-focus) ease-out;
+		transition: all var(--speed-focus) ease-out;
 
 		&__color {
 			display: inline-block;
@@ -58,17 +58,34 @@
 				@include mixins.transparent-background(8px);
 				border-radius: inherit;
 			}
+			&:after {
+				content: '';
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				border-radius: inherit;
+				border: 2px solid white;
+				opacity: 0;
+				mix-blend-mode: difference;
+			}
 		}
 
-		&:focus,
-		&:disabled {
-			box-shadow: 0 0 0 2px var(--color-key);
+		&:hover {
+			opacity: 0.6;
 		}
 		&.is-selected {
+			text-decoration: underline;
 
 			.el-cp-colors__item__color {
-				outline: 2px solid;
 				box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
+
+				&:after {
+					opacity: 1;
+				}
 			}
 		}
 	}
