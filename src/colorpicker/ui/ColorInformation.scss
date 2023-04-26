@@ -133,7 +133,7 @@
 		}
 	}
 
-	button,
+	.el-btn,
 	select,
 	svg {
 		display: block;
@@ -142,12 +142,12 @@
 	}
 	select,
 	.el-cp-color-nav__label svg,
-	button {
+	.el-btn {
 		background: var(--cp-buttons-bg);
 		box-shadow: 0 1px 5px rgb(0 0 0 / 10%)
 	}
 
-	button {
+	.el-btn {
 		width: 28px;
 		height: 24px;
 		border: none;
