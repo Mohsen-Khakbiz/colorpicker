@@ -25,6 +25,7 @@ export default class Swatch extends UIElement {
 			if ( this?.$store?.colorCssVar ) {
 				this.$el.find( `[data-color=${ this.$store.colorCssVar }]` )?.classList?.add( 'is-selected' );
 			}
+			if ( !this?.refs?.$index ) return;
 			[ ...this.refs.$index.el.querySelectorAll( 'button' ) ].forEach( button => {
 				const colorData = button.dataset.color;
 				if ( colorData?.startsWith( '--' ) ) {

@@ -158,6 +158,7 @@
 
 		svg {
 			transition: transform 0.65s;
+			pointer-events: none;
 		}
 
 		&:hover {
