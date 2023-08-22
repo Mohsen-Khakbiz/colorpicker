@@ -244,6 +244,7 @@ export default class GradientEditor extends UIElement {
 			this.$currentStep.css( {
 				left: this.currentStep.offset,
 			} );
+			this.$currentStep.attr( 'data-pos', parseFloat( Length.percent( percent ) ).toFixed( 2 ) );
 			this.setColorUI();
 			this.updateData();
 		}
@@ -334,7 +335,7 @@ export default class GradientEditor extends UIElement {
 					if ( bgColor.startsWith( 'var(' ) ) {
 						bgColor = this.getValueOfCssVar( bgColor )
 					}
-					return `<div class='step ${ this.colorsteps.length <= 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };'>
+					return `<div class='step ${ this.colorsteps.length <= 2 ? 'hide-remove' : '' }' data-index='${ index }' style='left: ${ it.offset };' data-pos='${ parseFloat( it.offset ).toFixed( 2 ) }'>
 						<div class='color-view' style="background-color: ${ bgColor }"></div>
 						<button type="button" class="remove-step" title="Remove color stop">&times;</button>
 					</div>`;
@@ -444,6 +445,7 @@ export default class GradientEditor extends UIElement {
 		this.$currentStep.css( {
 			left: Length.percent( percent ),
 		} );
+		this.$currentStep.attr( 'data-pos', parseFloat( Length.percent( percent ) ).toFixed( 2 ) );
 		this.setColorUI();
 		this.updateData();
 	}

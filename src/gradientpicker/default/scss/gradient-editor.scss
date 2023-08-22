@@ -138,6 +138,25 @@
 				box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.5);
 				transition: transform 0.1s ease-out;
 
+				&:before {
+					content: attr(data-pos)'%';
+					display: inline-block;
+					padding: 0.2em 1em;
+					border-radius: 4px;
+					position: absolute;
+					top: calc(100% + 5px);
+					inset-inline-start: 50%;
+					background-color: rgb(0 0 0 / 50%);
+					backdrop-filter: blur(8px);
+					font-size: 10px;
+					font-weight: 600;
+					color: #fff;
+					transform: translateX(-50%);
+					pointer-events: none;
+					transition: opacity 0.1s;
+					opacity: 0;
+				}
+
 				&[data-cut='true'] {
 					border-radius: 0%;
 
@@ -201,6 +220,13 @@
 
 					.remove-step {
 						display: none;
+					}
+				}
+
+				&:hover {
+
+					&:before {
+						opacity: 1;
 					}
 				}
 			}
