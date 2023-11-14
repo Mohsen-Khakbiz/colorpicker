@@ -28,9 +28,9 @@
 	--form-border-color: var(--cp-form-border-color, #ddd);
 	// swatches
 	--swatch-column: var(--cp-swatch-column, 7);
-	--swatch-gap: var(--cp-swatch-gap, 8px);
+	--swatch-gap: var(--cp-swatch-gap, 0);
 	--swatch-item-size: var(--cp-swatch-item-size, 22px);
-	--swatch-item-stroke-radius: var(--cp-swatch-item-stroke-radius, 50%);
+	--swatch-item-stroke-radius: var(--cp-swatch-item-stroke-radius, 3px);
 	--swatch-item-stroke-color: var(--cp-swatch-item-stroke-color, rgba(0, 0, 0, .15));
 	--swatch-border-color: var(--cp-swatch-border-color, #ddd);
 

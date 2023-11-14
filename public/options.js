@@ -9,7 +9,7 @@ const basicOpts = {
 	// paletteHeight: 200,
 	// paletteThickness: undefined,
 	swatchTitle: undefined,
-	swatchColors: [ { title: "Primary", color: "--e-global-color-primary" }, { title: "Secondary", color: "--e-global-color-secondary" }, { title: "Another color", color: "--e-global-color-ca88ef" } ],
+	swatchColors: [ { title: "Primary", color: "--e-global-color-primary" }, { title: "Secondary", color: "--e-global-color-secondary" }, { title: "Another color with longer title", color: "#ca88ef" } ],
 	onInit: ( self ) => {
 		custom = {
 			$color: document.querySelector( "#colorSample > i" ),

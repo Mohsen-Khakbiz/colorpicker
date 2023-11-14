@@ -20,7 +20,7 @@ export default class Swatch extends UIElement {
 
 	initialize() {
 		super.initialize();
-		setTimeout( () => {
+		const timeout = setTimeout( () => {
 			const getCssVarFrom = window.lqdColorPickerGetCssVarsFrom || document.documentElement;
 			if ( this?.$store?.colorCssVar ) {
 				this.$el.find( `[data-color=${ this.$store.colorCssVar }]` )?.classList?.add( 'is-selected' );
@@ -28,10 +28,14 @@ export default class Swatch extends UIElement {
 			if ( !this?.refs?.$index ) return;
 			[ ...this.refs.$index.el.querySelectorAll( 'button' ) ].forEach( button => {
 				const colorData = button.dataset.color;
+				let color = button.dataset.color;
 				if ( colorData?.startsWith( '--' ) ) {
-					button.style.setProperty( '--color', getComputedStyle( getCssVarFrom ).getPropertyValue( button.dataset.color ) );
+					color = getComputedStyle( getCssVarFrom ).getPropertyValue( button.dataset.color );
+					button.style.setProperty( '--color', color );
 				}
-			} )
+				button.setAttribute( 'data-eval-color', color );
+			} );
+			clearTimeout( timeout );
 		}, 10 )
 	}
 
